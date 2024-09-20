@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const spriteNames = ['player_1', 'enemy_1'];
-const backgroundNames = ['test'];
+const backgroundNames = ['test', 'test_2'];
 
 
 //データのオブジェクト
@@ -19,15 +19,12 @@ const game = {
 
 assetLoader();
 
-function assetLoader(){
+async function assetLoader(){
   //画像ロード
-  // game.spriteImage = imageLoader(spriteNames, 'sprite-');
-  // game.backgroundImage = imageLoader(backgroundNames, 'background-');
+  game.spriteImage = await imageLoader(spriteNames, 'sprite-');
+  game.backgroundImage = await imageLoader(backgroundNames, 'background-');
 
-  Promise.all([
-    imageLoader(spriteNames, 'sprite-'),
-    imageLoader(spriteNames, 'background-')
-  ]).then()
+  init();
 }
 
 function imageLoader(imgNames, imgType){
@@ -42,12 +39,12 @@ function imageLoader(imgNames, imgType){
       img[imageName].onload = () => {
         imageLoadCounter += 1;
         if(imageLoadCounter === imgNames.length){
-          console.log('画像ロード完了');
+          console.log(`${imgType}:画像ロード完了`);
           resolve(img);
         }
       };
       img[imageName].onerror = () => {
-        console.log('${imagePath}の画像ロード失敗');
+        console.log(`${imgType}:${imagePath}の画像ロード失敗`);
       };
     }
   })
