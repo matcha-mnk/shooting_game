@@ -130,6 +130,7 @@ function init(){
 
   //Player初期設定
   createPlayer();
+  gameManager.player.moveSpeed = 5;
   gameManager.player.x = canvas.width / 2;
   gameManager.player.y = canvas.height / 2;
 
@@ -157,7 +158,8 @@ function createPlayer(){
     moveY: 0,
     width: gameManager.spriteImage.player_1.width,
     height: gameManager.spriteImage.player_1.height,
-    image: gameManager.spriteImage.player_1
+    image: gameManager.spriteImage.player_1,
+    moveSpeed: 0
   }
 }
 
@@ -194,17 +196,70 @@ function drawUI(){
 
 //Input
 document.addEventListener('keydown', event => {
-  if(event.code === getKeyBind('moveRight') && gameManager.player.x <= 710){
-    //右移動
-    gameManager.player.moveX = 5;
-  }else if(event.code === getKeyBind('moveLeft') && gameManager.player.x >= 250){
-    //左移動
-    gameManager.player.moveX = -5;
-  }else if(event.code === getKeyBind('moveUp') && gameManager.player.y >= 0){
-    //上移動
-    gameManager.player.moveY = -5;
-  }else if (event.code === getKeyBind('moveDown') && gameManager.player.y <= 540){
-    //下移動
-    gameManager.player.moveY = 5;
+  let isKeyMoveRight = event.code === getKeyBind('moveRight');
+  let isKeyMoveLeft = event.code === getKeyBind('moveLeft');
+  let isKeyMoveUp = event.code === getKeyBind('moveUp');
+  let isKeyMoveDown = event.code === getKeyBind('moveDown');
+  let speed = gameManager.player.moveSpeed;
+
+  if(isKeyMoveRight && !isKeyMoveLeft && gameManager.player.x <= 710)
+  {
+    if(isKeyMoveUp){
+      //右上
+      gameManager.player.moveX = speed / 2;
+      gameManager.player.moveY = -speed / 2;
+    }else if(isKeyMoveDown){
+      //右下
+      gameManager.player.moveX = speed / 2;
+      gameManager.player.moveY = speed / 2;
+    }else{
+      //右
+      gameManager.player.moveX = speed;
+    }
+  }
+  else if(isKeyMoveLeft && !isKeyMoveRight && gameManager.player.x >= 250)
+  {
+    if(isKeyMoveUp){
+      //左上
+      gameManager.player.moveX = -speed / 2;
+      gameManager.player.moveY = -speed / 2;
+    }else if(isKeyMoveDown){
+      //左下
+      gameManager.player.moveX = -speed / 2;
+      gameManager.player.moveY = speed / 2;
+    }else{
+      //左
+      gameManager.player.moveX = -speed;
+    }
+  }
+  else if(isKeyMoveUp && !isKeyMoveDown && gameManager.player.x >= 250)
+  {
+    if(isKeyMoveRight){
+      //右上
+      gameManager.player.moveX = speed / 2;
+      gameManager.player.moveY = -speed / 2;
+    }else if(isKeyMoveLeft){
+      //左上
+      gameManager.player.moveX = -speed / 2;
+      gameManager.player.moveY = -speed / 2;
+    }else{
+      //上
+      gameManager.player.moveY = -speed;
+    }
+  }
+  else if(isKeyMoveDown && !isKeyMoveUp && gameManager.player.x >= 250)
+  {
+    if(isKeyMoveRight){
+      //右下
+      gameManager.player.moveX = speed / 2;
+      gameManager.player.moveY = speed / 2;
+    }else if(isKeyMoveLeft){
+      //左下
+      gameManager.player.moveX = -speed / 2;
+      gameManager.player.moveY = speed / 2;
+    }else{
+      //下
+      gameManager.player.moveY = speed;
+    }
   }
 })
