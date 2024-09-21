@@ -2,15 +2,16 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const spriteNames = ['player_1', 'enemy_1'];
-const backgroundNames = ['test', 'test_2'];
+const backgroundNames = ['test'];
+const uiNames = ['letter_box'];
 
 
-//データのオブジェクト
 const game = {
   timeCounter: 0,
   enemies: [],
   spriteImage: {},
   backgroundImage: {},
+  uiImage: {},
   isGameOver: true,
   score: 0,
   timer: null
@@ -21,8 +22,14 @@ assetLoader();
 
 async function assetLoader(){
   //画像ロード
-  game.spriteImage = await imageLoader(spriteNames, 'sprite-');
-  game.backgroundImage = await imageLoader(backgroundNames, 'background-');
+  const [_spriteImage, _backgroundImage, _uiImage] = await Promise.all([
+    imageLoader(spriteNames, 'sprite-'),
+    imageLoader(backgroundNames, 'background-'),
+    imageLoader(uiNames, 'ui-')
+  ]);
+  game.spriteImage = _spriteImage;
+  game.backgroundImage = _backgroundImage;
+  game.uiImage = _uiImage;
 
   init();
 }
@@ -56,6 +63,8 @@ function init(){
   game.enemies = [];
   game.isGameOver = false;
   game.score = 0;
-  ctx.drawImage(game.spriteImage.player_1, 500, 320);
-  ctx.drawImage(game.spriteImage.enemy_1, 300, 320);
+
+  ctx.fillStyle = '#2C2C2C';
+  ctx.fillRect(0, 0, 200, canvas.height);
+  ctx.fillRect(canvas.width-200, 0, 200, canvas.height);
 }
