@@ -148,12 +148,12 @@ function ticker(){
 
   //移動
   moveBackgroundStars();//Star移動
-  movePlayer();//Player移動
   moveEnemies();//Enemy移動
+  movePlayer();//Player移動
   //描画
   drawBackground();//Background描画
   drawBackgroundStars();//Star描画
-  //drawEnemies();//Enemy描画
+  drawEnemies();//Enemy描画
   drawPlayer();//Player描画
   drawUI();//UI描画
 
@@ -218,7 +218,7 @@ function enemyCreateManager(){
 function createEnemy1(posX){
   gameManager.enemies.push({
     x: posX,
-    y: -gameManager.spriteImage.enemy_1.height / 2,
+    y: 0,
     width: gameManager.spriteImage.enemy_1.width,
     height: gameManager.spriteImage.enemy_1.height,
     moveX: 0,
@@ -227,13 +227,21 @@ function createEnemy1(posX){
   });
 }
 
-//Enemy1移動
+//Enemy移動
 function moveEnemies(){
   for(const enemy of gameManager.enemies){
     enemy.x += enemy.moveX;
     enemy.y += enemy.moveY;
   }
-  gameManager.enemies = gameManager.enemies.filter(enemy => enemy.x < 710)
+  gameManager.enemies = gameManager.enemies.filter(enemy =>
+    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540);
+}
+
+//Enemy描画
+function drawEnemies(){
+  for(const enemy of gameManager.enemies){
+    ctx.drawImage(enemy.image, enemy.x - enemy.width/2, enemy.y - enemy.height/2);
+  }
 }
 
 //Background描画
