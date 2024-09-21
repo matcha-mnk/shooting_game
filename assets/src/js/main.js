@@ -1,12 +1,16 @@
+// const keyBinder = require('assets/src/js/keyBinder.js');
+
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const spriteNames = ['player_1', 'enemy_1'];
-const backgroundNames = ['test'];
+const backgroundNames = ['space_1'];
 const uiNames = ['letter_box'];
 
 
-const game = {
+//Game Manager プロパティ
+const gameManager = {
   timeCounter: 0,
   enemies: [],
   spriteImage: {},
@@ -17,21 +21,60 @@ const game = {
   timer: null
 };
 
+//ゲーム内の状態
+const gameSceneState = {
+  titleScene: true,
+  keyBindingScene: false,
+  gameScene: false,
 
-assetLoader();
+  changeScene(targetScene){
+    this.titleScene = false;
+    this.keyBindingScene = false;
+    this.gameScene = false;
 
-async function assetLoader(){
-  //画像ロード
-  const [_spriteImage, _backgroundImage, _uiImage] = await Promise.all([
-    imageLoader(spriteNames, 'sprite-'),
-    imageLoader(backgroundNames, 'background-'),
-    imageLoader(uiNames, 'ui-')
-  ]);
-  game.spriteImage = _spriteImage;
-  game.backgroundImage = _backgroundImage;
-  game.uiImage = _uiImage;
+    if(targetScene in this){
+      this[targetScene] = true;
+    }else{
+      console.log('不正なScene');
+    }
+  }
+}
 
-  init();
+//シーンチェンジのテスト
+//sceneChangeTest();
+function sceneChangeTest(){
+  if(
+    gameSceneState.titleScene === true
+    && gameSceneState.keyBindingScene === false
+    && gameSceneState.gameScene === false
+  );//正常
+  else console.log('ERROR-1')
+
+  gameSceneState.changeScene('keyBindingScene');
+  if(
+    gameSceneState.titleScene === false
+    && gameSceneState.keyBindingScene === true
+    && gameSceneState.gameScene === false
+  );//正常
+  else console.log('ERROR-2')
+
+  gameSceneState.changeScene('titleScene');
+  if(
+    gameSceneState.titleScene === true
+    && gameSceneState.keyBindingScene === false
+    && gameSceneState.gameScene === false
+  );//正常
+  else console.log('ERROR-3')
+
+  gameSceneState.changeScene('gameScene');
+  if(
+    gameSceneState.titleScene === false
+    && gameSceneState.keyBindingScene === false
+    && gameSceneState.gameScene === true
+  );//正常
+  else console.log('ERROR-4')
+
+  console.log('sceneChangeTest finished')
 }
 
 function imageLoader(imgNames, imgType){
@@ -57,14 +100,65 @@ function imageLoader(imgNames, imgType){
   })
 }
 
+
+assetLoader();
+
+async function assetLoader(){
+  //画像ロード
+  const [spriteImage, backgroundImage, uiImage] = await Promise.all([
+    imageLoader(spriteNames, 'sprite-'),
+    imageLoader(backgroundNames, 'background-'),
+    imageLoader(uiNames, 'ui-')
+  ]);
+  gameManager.spriteImage = spriteImage;
+  gameManager.backgroundImage = backgroundImage;
+  gameManager.uiImage = uiImage;
+
+  init();
+}
+
+
 //初期化
 function init(){
-  game.timeCounter = 0;
-  game.enemies = [];
-  game.isGameOver = false;
-  game.score = 0;
+  gameManager.timeCounter = 0;
+  gameManager.enemies = [];
+  gameManager.isGameOver = false;
+  gameManager.score = 0;
 
+  //Letter Box 描画
   ctx.fillStyle = '#2C2C2C';
-  ctx.fillRect(0, 0, 200, canvas.height);
-  ctx.fillRect(canvas.width-200, 0, 200, canvas.height);
+  ctx.fillRect(0, 0, 250, canvas.height);
+  ctx.fillRect(canvas.width-250, 0, 250, canvas.height);
+
+  ctx.drawImage(gameManager.backgroundImage.space_1, 250, 0)//Background 描画
+
+  createPlayer();
+
+  setInterval(ticker, 30);//カウント開始
 }
+
+function ticker(){
+  //
+}
+
+//Player プロパティ
+function createPlayer(){
+  gameManager.player = {
+    x: gameManager.spriteImage.player_1.width / 2,
+    y: canvas.height - gameManager.spriteImage.player_1.height / 2,
+    moveY: 0,
+    width: gameManager.spriteImage.player_1.width,
+    height: gameManager.spriteImage.player_1.height,
+    image: gameManager.spriteImage.player_1
+  }
+}
+
+// //Input
+// document.addEventListener('keydown', event => {
+//   if(event.code === keyBinder.getKeyBind()){
+//     //右移動
+//   }
+//   else if(event.code === ''){
+//     //左移動
+//   }
+// })
