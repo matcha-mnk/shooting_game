@@ -145,9 +145,7 @@ function init(){
   createPlayer();
   gameManager.player.moveSpeed = 10;
   gameManager.player.x = canvas.width / 2;
-  gameManager.player.y = canvas.height / 2;
-
-  enemyCreateManager();//Enemy生成
+  gameManager.player.y = canvas.height / 2 + 220;
 
   gameManager.timer = setInterval(ticker, 30);//カウント開始
 }
@@ -163,6 +161,7 @@ function ticker(){
 
   //処理
   shotPlayer();//PlayerShot処理
+  enemyCreateManager();//Enemy生成
   //移動
   moveBackgroundStars();//Star移動
   moveEnemies();//Enemy移動
@@ -296,18 +295,43 @@ function drawPlayerShots(){
 //Enemy
 //Enemy生成Manager
 function enemyCreateManager(){
-  createEnemy1(300);
+  const t = gameManager.count;
+
+  if(t === 50){
+    createEnemy1(300, 0);
+    createEnemy1(330, 0);
+  }
+  if(t === 90){
+    for(const enemy of gameManager.enemies){
+      enemy.moveX = 1.5;
+    }
+  }
+  if(t === 100){
+    createEnemy1(canvas.width - 300, 0);
+    createEnemy1(canvas.width - 330, 0);
+  }
+  if(t === 140){
+    for(const enemy of gameManager.enemies){
+      enemy.moveX = -1.5;
+    }
+  }
+  if(t === 200){
+    for(let i=0; i<7; i++){
+      createEnemy1(300+25*i, 0-50*i);
+      createEnemy1(canvas.width - 300-25*i, 0-50*i);
+    }
+  }
 }
 
 //Enemy1 プロパティ
-function createEnemy1(posX){
+function createEnemy1(posX, posY){
   gameManager.enemies.push({
     x: posX,
-    y: 100,//0
+    y: posY,
     width: gameManager.spriteImage.enemy_1.width,
     height: gameManager.spriteImage.enemy_1.height,
     moveX: 0,
-    moveY: 0,//5
+    moveY: 5,
     image: gameManager.spriteImage.enemy_1,
     scorePoint: 5,
     isDied: false
@@ -321,7 +345,7 @@ function moveEnemies(){
     enemy.y += enemy.moveY;
   }
   gameManager.enemies = gameManager.enemies.filter(enemy =>
-    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540 && !enemy.isDied
+    enemy.x < 710 && enemy.x > 250 /*&& enemy.y > 0*/ && enemy.y < 540 && !enemy.isDied
   );
 }
 
@@ -405,6 +429,12 @@ function drawUI(){
   ctx.font = '24px misaki_gothic_2nd';
   ctx.fillStyle = '#dbdbdb';
   ctx.fillText(`BOMB ${gameManager.bombs}`, 730, 250);
+
+
+  //Count
+  ctx.font = '24px misaki_gothic_2nd';
+  ctx.fillStyle = '#dbdbdb';
+  ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
 }
 
 //Input
