@@ -25,6 +25,7 @@ const gameManager = {
   isGameOver: true,
   life: 0,
   bombs: 0,
+  score: 0,
   count: 0,
   timer: null
 };
@@ -135,6 +136,7 @@ function init(){
   gameManager.life = 5;
   gameManager.bombs = 3;
   gameManager.count = 0;
+  gameManager.score = 0;
 
   gameSceneState.changeScene('titleScene');
 
@@ -267,7 +269,8 @@ function createPlayerShot1(posX, posY){
     height: gameManager.effectImage.player_shot_1.height,
     moveX: 0,
     moveY: -20,
-    image: gameManager.effectImage.player_shot_1
+    image: gameManager.effectImage.player_shot_1,
+    isDied: false
   })
 }
 
@@ -278,7 +281,7 @@ function movePlayerShots(){
     shot.y += shot.moveY;
   }
   gameManager.playerShots = gameManager.playerShots.filter(shot =>
-    shot.x < 710 && shot.x > 250 && shot.y > 0 && shot.y < 540
+    shot.x < 710 && shot.x > 250 && shot.y > 0 && shot.y < 540 && !shot.isDied
   );
 }
 
@@ -305,7 +308,8 @@ function createEnemy1(posX){
     moveX: 0,
     moveY: 0,//5
     image: gameManager.spriteImage.enemy_1,
-    died: false
+    scorePoint: 5,
+    isDied: false
   });
 }
 
@@ -316,7 +320,7 @@ function moveEnemies(){
     enemy.y += enemy.moveY;
   }
   gameManager.enemies = gameManager.enemies.filter(enemy =>
-    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540 && !enemy.died
+    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540 && !enemy.isDied
   );
 }
 
@@ -459,7 +463,9 @@ function hitCheckPlayerShot(){
         Math.abs(shot.y - enemy.y) < shot.height * 0.6 / 2 + enemy.height * 0.7 /2
       ){
         //console.log('HIT!!!');
-        enemy.died = true;
+        enemy.isDied = true;//Enemy消す
+        shot.isDied = true;//Shot消す
+        gameManager.score += enemy.scorePoint;//スコア加算
       }
     }
   }
