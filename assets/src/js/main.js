@@ -128,22 +128,25 @@ function init(){
 
   gameSceneState.changeScene('titleScene');
 
-  //Background 描画
-  ctx.drawImage(gameManager.backgroundImage.space_1, canvas.width / 2 - gameManager.backgroundImage.space_1.width/2, 0);
-
-  //Letter Box 描画
-  ctx.fillStyle = '#2C2C2C';
-  ctx.fillRect(0, 0, 250, canvas.height);
-  ctx.fillRect(canvas.width-250, 0, 250, canvas.height);
-
+  //Player初期設定
   createPlayer();
+  gameManager.player.x = canvas.width / 2;
+  gameManager.player.y = canvas.height / 2;
 
   setInterval(ticker, 30);//カウント開始
 }
 
 function ticker(){
-  //
+  ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
+
+  drawBackground();//Background描画
+  movePlayer();//Player移動
+  drawPlayer();//Player描画
+  drawUI();//UI描画
+
+  gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;//カウンタ更新
 }
+
 
 //Player プロパティ
 function createPlayer(){
@@ -158,19 +161,50 @@ function createPlayer(){
   }
 }
 
+//Player移動
+function movePlayer(){
+  gameManager.player.x += gameManager.player.moveX;
+  gameManager.player.y += gameManager.player.moveY;
+}
+
+//Player描画
+function drawPlayer(){
+  ctx.drawImage(
+    gameManager.spriteImage.player_1,
+    gameManager.player.x - gameManager.player.width / 2,
+    gameManager.player.y - gameManager.player.height / 2
+  );
+}
+
+//Background描画
+function drawBackground(){
+  ctx.drawImage(
+    gameManager.backgroundImage.space_1,
+    canvas.width / 2 - gameManager.backgroundImage.space_1.width/2, 0
+  );
+}
+
+//UI描画
+function drawUI(){
+  //Letter Box
+  ctx.fillStyle = '#2C2C2C';
+  ctx.fillRect(0, 0, 250, canvas.height);
+  ctx.fillRect(canvas.width-250, 0, 250, canvas.height);
+}
+
 //Input
 document.addEventListener('keydown', event => {
-  if(event.code === getKeyBind('moveRight')){
+  if(event.code === getKeyBind('moveRight') && gameManager.player.x <= 710){
     //右移動
-    gameManager.player.moveX = 20;
-  }else if(event.code === getKeyBind('moveLeft')){
+    gameManager.player.moveX = 5;
+  }else if(event.code === getKeyBind('moveLeft') && gameManager.player.x >= 250){
     //左移動
-    gameManager.player.moveX = -20;
-  }else if(event.code === getKeyBind('moveUp')){
+    gameManager.player.moveX = -5;
+  }else if(event.code === getKeyBind('moveUp') && gameManager.player.y >= 0){
     //上移動
-    gameManager.player.moveY = -20;
-  }else if (event.code === getKeyBind('moveDown')){
+    gameManager.player.moveY = -5;
+  }else if (event.code === getKeyBind('moveDown') && gameManager.player.y <= 540){
     //下移動
-    gameManager.player.moveY = 20;
+    gameManager.player.moveY = 5;
   }
 })
