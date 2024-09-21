@@ -1,18 +1,28 @@
 //初期設定
 const defaultKeyActions = {
   showMenu: 'Tab',
+  moveUp: 'ArrowUp',
+  moveDown: 'ArrowDown',
   moveRight: 'ArrowRight',
   moveLeft: 'ArrowLeft',
-  fire: 'Space'
+  shot: 'KeyZ',
+  bomb: 'KeyX'
 }
 
 let keyActions = {
   showMenu: 'Tab',
+  moveUp: 'ArrowUp',
+  moveDown: 'ArrowDown',
   moveRight: 'ArrowRight',
   moveLeft: 'ArrowLeft',
-  fire: 'Space'
+  shot: 'KeyZ',
+  bomb: 'KeyX'
 }
 
 export function getKeyBind(action){
-  return keyActions[action];
+  if(action in keyActions){
+    return keyActions[action];
+  }else{
+    console.error('不正なAction名');
+  }
 }

@@ -35,7 +35,7 @@ const gameSceneState = {
     if(targetScene in this){
       this[targetScene] = true;
     }else{
-      console.error('不正なScene');
+      console.error('不正なScene名');
     }
   }
 }
@@ -128,12 +128,13 @@ function init(){
 
   gameSceneState.changeScene('titleScene');
 
+  //Background 描画
+  ctx.drawImage(gameManager.backgroundImage.space_1, canvas.width / 2 - gameManager.backgroundImage.space_1.width/2, 0);
+
   //Letter Box 描画
   ctx.fillStyle = '#2C2C2C';
   ctx.fillRect(0, 0, 250, canvas.height);
   ctx.fillRect(canvas.width-250, 0, 250, canvas.height);
-
-  ctx.drawImage(gameManager.backgroundImage.space_1, 250, 0)//Background 描画
 
   createPlayer();
 
@@ -149,6 +150,7 @@ function createPlayer(){
   gameManager.player = {
     x: gameManager.spriteImage.player_1.width / 2,
     y: canvas.height - gameManager.spriteImage.player_1.height / 2,
+    moveX: 0,
     moveY: 0,
     width: gameManager.spriteImage.player_1.width,
     height: gameManager.spriteImage.player_1.height,
@@ -158,10 +160,17 @@ function createPlayer(){
 
 //Input
 document.addEventListener('keydown', event => {
-  if(event.code === getKeyBind('')){
+  if(event.code === getKeyBind('moveRight')){
     //右移動
-  }
-  else if(event.code === ''){
+    gameManager.player.moveX = 20;
+  }else if(event.code === getKeyBind('moveLeft')){
     //左移動
+    gameManager.player.moveX = -20;
+  }else if(event.code === getKeyBind('moveUp')){
+    //上移動
+    gameManager.player.moveY = -20;
+  }else if (event.code === getKeyBind('moveDown')){
+    //下移動
+    gameManager.player.moveY = 20;
   }
 })
