@@ -4,6 +4,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const spriteNames = ['player_1', 'enemy_1'];
+const effectNames = ['player_shot_1'];
 const backgroundNames = ['space_1'];
 const uiNames = ['letter_box'];
 
@@ -14,13 +15,16 @@ let isDownKey = false;
 //Game Manager プロパティ
 const gameManager = {
   timeCounter: 0,
+  playerShots: [],
   enemies: [],
   stars: [],
   spriteImage: {},
+  effectImage: {},
   backgroundImage: {},
   uiImage: {},
   isGameOver: true,
   life: 0,
+  bombs: 0,
   count: 0,
   timer: null
 };
@@ -109,12 +113,14 @@ assetLoader();
 
 //画像ロード
 async function assetLoader(){
-  const [spriteImage, backgroundImage, uiImage] = await Promise.all([
+  const [spriteImage, effectImage, backgroundImage, uiImage] = await Promise.all([
     imageLoader(spriteNames, 'sprite-'),
+    imageLoader(effectNames, 'effect-'),
     imageLoader(backgroundNames, 'background-'),
     imageLoader(uiNames, 'ui-')
   ]);
   gameManager.spriteImage = spriteImage;
+  gameManager.effectImage = effectImage;
   gameManager.backgroundImage = backgroundImage;
   gameManager.uiImage = uiImage;
 
@@ -127,19 +133,20 @@ function init(){
   gameManager.enemies = [];
   gameManager.isGameOver = false;
   gameManager.life = 5;
+  gameManager.bombs = 3;
   gameManager.count = 0;
 
   gameSceneState.changeScene('titleScene');
 
   //Player初期設定
   createPlayer();
-  gameManager.player.moveSpeed = 5;
+  gameManager.player.moveSpeed = 10;
   gameManager.player.x = canvas.width / 2;
   gameManager.player.y = canvas.height / 2;
 
   enemyCreateManager();//Enemy生成
 
-  setInterval(ticker, 30);//カウント開始
+  gameManager.timer = setInterval(ticker, 30);//カウント開始
 }
 
 //Update
@@ -156,11 +163,13 @@ function ticker(){
   //移動
   moveBackgroundStars();//Star移動
   moveEnemies();//Enemy移動
+  movePlayerShots();//Shot移動
   movePlayer();//Player移動
   //描画
   drawBackground();//Background描画
   drawBackgroundStars();//Star描画
   drawEnemies();//Enemy描画
+  drawPlayerShots();//Shot描画
   drawPlayer();//Player描画
   drawUI();//UI描画
 
@@ -188,19 +197,20 @@ function createPlayer(){
 //Player Shot
 function shotPlayer(){
   if(isShot){
-    const interval = 10;
+    const interval = 2;
     const count = gameManager.count;
     if((count - oldCountShot) > interval){
       oldCountShot = count;
-      //TASK:弾発射
+      createPlayerShot1(gameManager.player.x, gameManager.player.y - 5)//弾発射
       //console.log('SHOT!');
     }
   }
 
-  if(isBomb && !isDownKey){
+  if(isBomb && !isDownKey && gameManager.bombs > 0){
     isDownKey = true;
+    gameManager.bombs--;
     //TASK:Bomb発射
-    console.log('BOMB!');
+    //console.log('BOMB!');
   }else if (!isBomb){
     isDownKey = false;
   }
@@ -241,6 +251,38 @@ function drawPlayer(){
   );
 }
 
+//Shotプロパティ
+function createPlayerShot1(posX, posY){
+  console.log('shot');
+  gameManager.playerShots.push({
+    x: posX,
+    y: posY,
+    width: gameManager.effectImage.player_shot_1.width,
+    height: gameManager.effectImage.player_shot_1.height,
+    moveX: 0,
+    moveY: -20,
+    image: gameManager.effectImage.player_shot_1
+  })
+}
+
+//Shot移動
+function movePlayerShots(){
+  for(const shot of gameManager.playerShots){
+    shot.x += shot.moveX;
+    shot.y += shot.moveY;
+  }
+  gameManager.playerShots = gameManager.playerShots.filter(shot =>
+    shot.x < 710 && shot.x > 250 && shot.y > 0 && shot.y < 540
+  );
+}
+
+//Shot描画
+function drawPlayerShots(){
+  for(const shot of gameManager.playerShots){
+    ctx.drawImage(shot.image, shot.x - shot.width/2, shot.y - shot.height/2);
+  }
+}
+
 //Enemy生成Manager
 function enemyCreateManager(){
   createEnemy1(300);
@@ -266,7 +308,8 @@ function moveEnemies(){
     enemy.y += enemy.moveY;
   }
   gameManager.enemies = gameManager.enemies.filter(enemy =>
-    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540);
+    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540
+  );
 }
 
 //Enemy描画
@@ -366,7 +409,7 @@ document.addEventListener('keyup', event => {
 //当たり判定
 function hitCheck(){
   for(const enemy of gameManager.enemies) {
-    const interval = 100;
+    const interval = 50;
     const count = gameManager.count;
 
     if(
@@ -382,8 +425,20 @@ function hitCheck(){
         gameManager.life--;
       }else{
         gameManager.isGameOver = true;
+
+        //GameOver表現
+        ctx.font = 'bold 50px sans';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText(`Game Over`, 480, 270);
+
         clearInterval(gameManager.timer);
       }
     }
   }
+}
+
+//敵側当たり判定
+function hitCheckEnemy(){
+  //
 }
