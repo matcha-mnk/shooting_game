@@ -1,4 +1,4 @@
-// const keyBinder = require('assets/src/js/keyBinder.js');
+import { getKeyBind } from './keyBinder.js';
 
 
 const canvas = document.getElementById('canvas');
@@ -21,9 +21,9 @@ const gameManager = {
   timer: null
 };
 
-//ゲーム内の状態
+//ゲーム内シーンの状態
 const gameSceneState = {
-  titleScene: true,
+  titleScene: false,
   keyBindingScene: false,
   gameScene: false,
 
@@ -35,7 +35,7 @@ const gameSceneState = {
     if(targetScene in this){
       this[targetScene] = true;
     }else{
-      console.log('不正なScene');
+      console.error('不正なScene');
     }
   }
 }
@@ -44,11 +44,11 @@ const gameSceneState = {
 //sceneChangeTest();
 function sceneChangeTest(){
   if(
-    gameSceneState.titleScene === true
+    gameSceneState.titleScene === false
     && gameSceneState.keyBindingScene === false
     && gameSceneState.gameScene === false
   );//正常
-  else console.log('ERROR-1')
+  else console.error('ERROR-sceneChangeTest');
 
   gameSceneState.changeScene('keyBindingScene');
   if(
@@ -56,7 +56,7 @@ function sceneChangeTest(){
     && gameSceneState.keyBindingScene === true
     && gameSceneState.gameScene === false
   );//正常
-  else console.log('ERROR-2')
+  else console.error('ERROR-sceneChangeTest')
 
   gameSceneState.changeScene('titleScene');
   if(
@@ -64,7 +64,7 @@ function sceneChangeTest(){
     && gameSceneState.keyBindingScene === false
     && gameSceneState.gameScene === false
   );//正常
-  else console.log('ERROR-3')
+  else console.error('ERROR-sceneChangeTest')
 
   gameSceneState.changeScene('gameScene');
   if(
@@ -72,11 +72,12 @@ function sceneChangeTest(){
     && gameSceneState.keyBindingScene === false
     && gameSceneState.gameScene === true
   );//正常
-  else console.log('ERROR-4')
+  else console.error('ERROR-sceneChangeTest');
 
-  console.log('sceneChangeTest finished')
+  console.log('sceneChangeTest finished');
 }
 
+//画像読み込み関数
 function imageLoader(imgNames, imgType){
   return new Promise((resolve) => {
     let imageLoadCounter = 0;
@@ -94,7 +95,7 @@ function imageLoader(imgNames, imgType){
         }
       };
       img[imageName].onerror = () => {
-        console.log(`${imgType}:${imagePath}の画像ロード失敗`);
+        console.error(`${imgType}:${imagePath}の画像ロード失敗`);
       };
     }
   })
@@ -125,6 +126,8 @@ function init(){
   gameManager.isGameOver = false;
   gameManager.score = 0;
 
+  gameSceneState.changeScene('titleScene');
+
   //Letter Box 描画
   ctx.fillStyle = '#2C2C2C';
   ctx.fillRect(0, 0, 250, canvas.height);
@@ -153,12 +156,12 @@ function createPlayer(){
   }
 }
 
-// //Input
-// document.addEventListener('keydown', event => {
-//   if(event.code === keyBinder.getKeyBind()){
-//     //右移動
-//   }
-//   else if(event.code === ''){
-//     //左移動
-//   }
-// })
+//Input
+document.addEventListener('keydown', event => {
+  if(event.code === getKeyBind('')){
+    //右移動
+  }
+  else if(event.code === ''){
+    //左移動
+  }
+})

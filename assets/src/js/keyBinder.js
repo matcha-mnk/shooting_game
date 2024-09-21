@@ -13,8 +13,6 @@ let keyActions = {
   fire: 'Space'
 }
 
-function getKeyBind(action){
-  //
+export function getKeyBind(action){
+  return keyActions[action];
 }
-
-module.export = { getKeyBind };
