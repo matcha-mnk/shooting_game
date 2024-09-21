@@ -26,3 +26,7 @@ export function getKeyBind(action){
     console.error('不正なAction名');
   }
 }
+
+function newKeyBind(action){
+  //KeyBind変更
+}

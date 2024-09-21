@@ -1,6 +1,5 @@
 import { getKeyBind } from './keyBinder.js';
 
-
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -13,6 +12,7 @@ const uiNames = ['letter_box'];
 const gameManager = {
   timeCounter: 0,
   enemies: [],
+  stars: [],
   spriteImage: {},
   backgroundImage: {},
   uiImage: {},
@@ -101,11 +101,10 @@ function imageLoader(imgNames, imgType){
   })
 }
 
-
 assetLoader();
 
+//画像ロード
 async function assetLoader(){
-  //画像ロード
   const [spriteImage, backgroundImage, uiImage] = await Promise.all([
     imageLoader(spriteNames, 'sprite-'),
     imageLoader(backgroundNames, 'background-'),
@@ -117,7 +116,6 @@ async function assetLoader(){
 
   init();
 }
-
 
 //初期化
 function init(){
@@ -134,20 +132,33 @@ function init(){
   gameManager.player.x = canvas.width / 2;
   gameManager.player.y = canvas.height / 2;
 
+  enemyCreateManager();//Enemy生成
+
   setInterval(ticker, 30);//カウント開始
 }
 
+//Update
 function ticker(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
 
-  drawBackground();//Background描画
+  //Star生成
+  if(Math.floor(Math.random() * 5) === 0){
+    createBackgroundStar();
+  }
+
+  //移動
+  moveBackgroundStars();//Star移動
   movePlayer();//Player移動
+  // moveEnemies();//Enemy移動
+  //描画
+  drawBackground();//Background描画
+  drawBackgroundStars();//Star描画
+  // drawEnemies();//Enemy描画
   drawPlayer();//Player描画
   drawUI();//UI描画
 
   gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;//カウンタ更新
 }
-
 
 //Player プロパティ
 function createPlayer(){
@@ -198,12 +209,59 @@ function drawPlayer(){
   );
 }
 
+//Enemy生成Manager
+function enemyCreateManager(){
+  createEnemy1();
+}
+
+//Enemy1 プロパティ
+function createEnemy1(){
+  gameManager.enemies.push({
+    x: canvas.width + gameManager.spriteImage.enemy_1.width / 2,
+    y: canvas.height - gameManager.spriteImage.enemy_1.height / 2,
+    width: gameManager.spriteImage.enemy_1.width,
+    height: gameManager.spriteImage.enemy_1.height,
+    moveX: 0,
+    moveY: 0,
+    image: gameManager.spriteImage.enemy_1
+  })
+}
+
 //Background描画
 function drawBackground(){
   ctx.drawImage(
     gameManager.backgroundImage.space_1,
     canvas.width / 2 - gameManager.backgroundImage.space_1.width/2, 0
   );
+}
+
+//Starプロパティ
+function createBackgroundStar(){
+  const size = 1;
+  const starX = Math.random() * (460 - size) + 250;
+  gameManager.stars.push({
+    x: starX,
+    y: 0,
+    width: size,
+    height: size,
+    moveY: 10
+  });
+}
+
+//Star移動
+function moveBackgroundStars(){
+  for(const star of gameManager.stars){
+    star.y += star.moveY;
+  }
+  gameManager.stars = gameManager.stars.filter(star => star.y > -star.width);
+}
+
+//Star描画
+function drawBackgroundStars(){
+  ctx.fillStyle = 'white';
+  for(const star of gameManager.stars){
+    ctx.fillRect(star.x - star.width / 2, star.y - star.height / 2,  star.width, star.height);
+  }
 }
 
 //UI描画
