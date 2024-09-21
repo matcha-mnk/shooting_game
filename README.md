@@ -1,1 +1,1 @@
-# 2D Shooting Game
+# Shooting Game
