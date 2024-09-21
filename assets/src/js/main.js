@@ -7,6 +7,9 @@ const spriteNames = ['player_1', 'enemy_1'];
 const backgroundNames = ['space_1'];
 const uiNames = ['letter_box'];
 
+let oldCountHit = 0;//リファクタしてね
+let oldCountShot = 0;
+let isDownKey = false;
 
 //Game Manager プロパティ
 const gameManager = {
@@ -18,7 +21,7 @@ const gameManager = {
   uiImage: {},
   isGameOver: true,
   life: 0,
-  score: 0,
+  count: 0,
   timer: null
 };
 
@@ -124,7 +127,7 @@ function init(){
   gameManager.enemies = [];
   gameManager.isGameOver = false;
   gameManager.life = 5;
-  gameManager.score = 0;
+  gameManager.count = 0;
 
   gameSceneState.changeScene('titleScene');
 
@@ -148,6 +151,8 @@ function ticker(){
     createBackgroundStar();
   }
 
+  //処理
+  shotPlayer();//PlayerShot処理
   //移動
   moveBackgroundStars();//Star移動
   moveEnemies();//Enemy移動
@@ -162,7 +167,7 @@ function ticker(){
   hitCheck();//当たり判定
 
   //カウンタ更新
-  gameManager.score++;
+  gameManager.count++;
   gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;
 }
 
@@ -177,6 +182,27 @@ function createPlayer(){
     height: gameManager.spriteImage.player_1.height,
     image: gameManager.spriteImage.player_1,
     moveSpeed: 0
+  }
+}
+
+//Player Shot
+function shotPlayer(){
+  if(isShot){
+    const interval = 10;
+    const count = gameManager.count;
+    if((count - oldCountShot) > interval){
+      oldCountShot = count;
+      //TASK:弾発射
+      //console.log('SHOT!');
+    }
+  }
+
+  if(isBomb && !isDownKey){
+    isDownKey = true;
+    //TASK:Bomb発射
+    console.log('BOMB!');
+  }else if (!isBomb){
+    isDownKey = false;
   }
 }
 
@@ -300,6 +326,10 @@ let isMoveRight = false;
 let isMoveLeft = false;
 let isMoveUp = false;
 let isMoveDown = false;
+
+let isShot = false;
+let isBomb = false;
+
 document.addEventListener('keydown', event => {
   //一応拡張しやすいように残しておく
   let isKeyMoveRight = event.code === getKeyBind('moveRight');
@@ -314,7 +344,9 @@ document.addEventListener('keydown', event => {
   if(isKeyMoveDown) isMoveDown = true;
 
   //shot
-  if(event.code === getKeyBind('shot'));
+  if(event.code === getKeyBind('shot')) isShot = true;
+  //bomb
+  if(event.code === getKeyBind('bomb')) isBomb = true;
 });
 document.addEventListener('keyup', event => {
   let isKeyMoveRight = event.code === getKeyBind('moveRight');
@@ -326,22 +358,23 @@ document.addEventListener('keyup', event => {
   if(isKeyMoveLeft) isMoveLeft = false;
   if(isKeyMoveUp) isMoveUp = false;
   if(isKeyMoveDown) isMoveDown = false;
-});
 
-let oldCount = 0;
+  if(event.code === getKeyBind('shot')) isShot = false;
+  if(event.code === getKeyBind('bomb')) isBomb = false;
+});
 
 //当たり判定
 function hitCheck(){
   for(const enemy of gameManager.enemies) {
     const interval = 100;
-    const count = gameManager.score;
+    const count = gameManager.count;
 
     if(
       Math.abs(gameManager.player.x - enemy.x) < gameManager.player.width / 16 + enemy.width * 0.5 / 2 &&
       Math.abs(gameManager.player.y - enemy.y) < gameManager.player.height / 16 + enemy.height * 0.5 /2 &&
-      (count - oldCount) > interval
+      (count - oldCountHit) > interval
     ){
-      oldCount = count;
+      oldCountHit = count;
       //TASK:被弾表現
       //console.log('HIT!');
 
