@@ -17,6 +17,7 @@ const gameManager = {
   backgroundImage: {},
   uiImage: {},
   isGameOver: true,
+  life: 0,
   score: 0,
   timer: null
 };
@@ -122,6 +123,7 @@ function init(){
   gameManager.timeCounter = 0;
   gameManager.enemies = [];
   gameManager.isGameOver = false;
+  gameManager.life = 5;
   gameManager.score = 0;
 
   gameSceneState.changeScene('titleScene');
@@ -157,7 +159,11 @@ function ticker(){
   drawPlayer();//Player描画
   drawUI();//UI描画
 
-  gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;//カウンタ更新
+  hitCheck();//当たり判定
+
+  //カウンタ更新
+  gameManager.score++;
+  gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;
 }
 
 //Player プロパティ
@@ -218,11 +224,11 @@ function enemyCreateManager(){
 function createEnemy1(posX){
   gameManager.enemies.push({
     x: posX,
-    y: 0,
+    y: 100,//0
     width: gameManager.spriteImage.enemy_1.width,
     height: gameManager.spriteImage.enemy_1.height,
     moveX: 0,
-    moveY: 5,
+    moveY: 0,//5
     image: gameManager.spriteImage.enemy_1
   });
 }
@@ -301,10 +307,14 @@ document.addEventListener('keydown', event => {
   let isKeyMoveUp = event.code === getKeyBind('moveUp');
   let isKeyMoveDown = event.code === getKeyBind('moveDown');
 
+  //移動
   if(isKeyMoveRight) isMoveRight = true;
   if(isKeyMoveLeft) isMoveLeft = true;
   if(isKeyMoveUp) isMoveUp = true;
   if(isKeyMoveDown) isMoveDown = true;
+
+  //shot
+  if(event.code === getKeyBind('shot'));
 });
 document.addEventListener('keyup', event => {
   let isKeyMoveRight = event.code === getKeyBind('moveRight');
@@ -317,3 +327,30 @@ document.addEventListener('keyup', event => {
   if(isKeyMoveUp) isMoveUp = false;
   if(isKeyMoveDown) isMoveDown = false;
 });
+
+let oldCount = 0;
+
+//当たり判定
+function hitCheck(){
+  for(const enemy of gameManager.enemies) {
+    const interval = 100;
+    const count = gameManager.score;
+
+    if(
+      Math.abs(gameManager.player.x - enemy.x) < gameManager.player.width / 16 + enemy.width * 0.5 / 2 &&
+      Math.abs(gameManager.player.y - enemy.y) < gameManager.player.height / 16 + enemy.height * 0.5 /2 &&
+      (count - oldCount) > interval
+    ){
+      oldCount = count;
+      //TASK:被弾表現
+      //console.log('HIT!');
+
+      if(gameManager.life > 0){
+        gameManager.life--;
+      }else{
+        gameManager.isGameOver = true;
+        clearInterval(gameManager.timer);
+      }
+    }
+  }
+}
