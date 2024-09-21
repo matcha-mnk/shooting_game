@@ -5,6 +5,7 @@ const defaultKeyActions = {
   moveDown: 'ArrowDown',
   moveRight: 'ArrowRight',
   moveLeft: 'ArrowLeft',
+  slowMove: 'ShiftLeft',
   shot: 'KeyZ',
   bomb: 'KeyX'
 }
@@ -15,6 +16,7 @@ let keyActions = {
   moveDown: 'ArrowDown',
   moveRight: 'ArrowRight',
   moveLeft: 'ArrowLeft',
+  slowMove: 'ShiftLeft',
   shot: 'KeyZ',
   bomb: 'KeyX'
 }

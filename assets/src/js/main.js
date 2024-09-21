@@ -219,12 +219,14 @@ function shotPlayer(){
 //Player移動
 function movePlayer(){
   let speed = gameManager.player.moveSpeed;
+  const slowSpeedRatio = 0.2;
 
   //移動計算
   if((isMoveRight || isMoveLeft) && (isMoveUp || isMoveDown)){
-    //斜め移動
-     speed = gameManager.player.moveSpeed / 2;
+    if(isSlowMove) speed = gameManager.player.moveSpeed / 2 * slowSpeedRatio//斜め+低速移動 リファクタできそう
+    else speed = gameManager.player.moveSpeed / 2;//斜め移動
   }
+  else if (isSlowMove) speed = gameManager.player.moveSpeed * slowSpeedRatio//低速移動 リファクタできそう
   else speed = gameManager.player.moveSpeed;//通常移動
 
   if(isMoveRight && isMoveLeft) gameManager.player.moveX = 0;//左右同時は停止
@@ -369,6 +371,7 @@ let isMoveRight = false;
 let isMoveLeft = false;
 let isMoveUp = false;
 let isMoveDown = false;
+let isSlowMove =false;
 
 let isShot = false;
 let isBomb = false;
@@ -385,6 +388,7 @@ document.addEventListener('keydown', event => {
   if(isKeyMoveLeft) isMoveLeft = true;
   if(isKeyMoveUp) isMoveUp = true;
   if(isKeyMoveDown) isMoveDown = true;
+  if(event.code === getKeyBind('slowMove')) isSlowMove = true;
 
   //shot
   if(event.code === getKeyBind('shot')) isShot = true;
@@ -401,6 +405,7 @@ document.addEventListener('keyup', event => {
   if(isKeyMoveLeft) isMoveLeft = false;
   if(isKeyMoveUp) isMoveUp = false;
   if(isKeyMoveDown) isMoveDown = false;
+  if(event.code === getKeyBind('slowMove')) isSlowMove = false;
 
   if(event.code === getKeyBind('shot')) isShot = false;
   if(event.code === getKeyBind('bomb')) isBomb = false;
