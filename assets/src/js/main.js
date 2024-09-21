@@ -149,11 +149,11 @@ function ticker(){
   //移動
   moveBackgroundStars();//Star移動
   movePlayer();//Player移動
-  // moveEnemies();//Enemy移動
+  moveEnemies();//Enemy移動
   //描画
   drawBackground();//Background描画
   drawBackgroundStars();//Star描画
-  // drawEnemies();//Enemy描画
+  //drawEnemies();//Enemy描画
   drawPlayer();//Player描画
   drawUI();//UI描画
 
@@ -185,14 +185,14 @@ function movePlayer(){
   }
   else speed = gameManager.player.moveSpeed;//通常移動
 
-  if(isMoveRight && isMoveLeft) gameManager.player.moveX = 0;//左右いずれか
-  else if(isMoveRight) gameManager.player.moveX = speed;//右
-  else if(isMoveLeft) gameManager.player.moveX = -speed;//左
+  if(isMoveRight && isMoveLeft) gameManager.player.moveX = 0;//左右同時は停止
+  else if(isMoveRight && gameManager.player.x < 710) gameManager.player.moveX = speed;//右
+  else if(isMoveLeft && gameManager.player.x > 250) gameManager.player.moveX = -speed;//左
   else gameManager.player.moveX = 0;//停止
 
-  if(isMoveUp && isMoveDown) gameManager.player.moveY = 0;//上下いずれか
-  else if(isMoveUp) gameManager.player.moveY = -speed;//上
-  else if(isMoveDown) gameManager.player.moveY = speed;//下
+  if(isMoveUp && isMoveDown) gameManager.player.moveY = 0;//上下同時は停止
+  else if(isMoveUp && gameManager.player.y > 0) gameManager.player.moveY = -speed;//上
+  else if(isMoveDown && gameManager.player.y < 540) gameManager.player.moveY = speed;//下
   else gameManager.player.moveY = 0;//停止
 
   //移動代入
@@ -211,20 +211,29 @@ function drawPlayer(){
 
 //Enemy生成Manager
 function enemyCreateManager(){
-  createEnemy1();
+  createEnemy1(300);
 }
 
 //Enemy1 プロパティ
-function createEnemy1(){
+function createEnemy1(posX){
   gameManager.enemies.push({
-    x: canvas.width + gameManager.spriteImage.enemy_1.width / 2,
-    y: canvas.height - gameManager.spriteImage.enemy_1.height / 2,
+    x: posX,
+    y: -gameManager.spriteImage.enemy_1.height / 2,
     width: gameManager.spriteImage.enemy_1.width,
     height: gameManager.spriteImage.enemy_1.height,
     moveX: 0,
-    moveY: 0,
+    moveY: 5,
     image: gameManager.spriteImage.enemy_1
-  })
+  });
+}
+
+//Enemy1移動
+function moveEnemies(){
+  for(const enemy of gameManager.enemies){
+    enemy.x += enemy.moveX;
+    enemy.y += enemy.moveY;
+  }
+  gameManager.enemies = gameManager.enemies.filter(enemy => enemy.x < 710)
 }
 
 //Background描画
