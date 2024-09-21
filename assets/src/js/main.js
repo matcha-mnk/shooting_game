@@ -165,6 +165,26 @@ function createPlayer(){
 
 //Player移動
 function movePlayer(){
+  let speed = gameManager.player.moveSpeed;
+
+  //移動計算
+  if((isMoveRight || isMoveLeft) && (isMoveUp || isMoveDown)){
+    //斜め移動
+     speed = gameManager.player.moveSpeed / 2;
+  }
+  else speed = gameManager.player.moveSpeed;//通常移動
+
+  if(isMoveRight && isMoveLeft) gameManager.player.moveX = 0;//左右いずれか
+  else if(isMoveRight) gameManager.player.moveX = speed;//右
+  else if(isMoveLeft) gameManager.player.moveX = -speed;//左
+  else gameManager.player.moveX = 0;//停止
+
+  if(isMoveUp && isMoveDown) gameManager.player.moveY = 0;//上下いずれか
+  else if(isMoveUp) gameManager.player.moveY = -speed;//上
+  else if(isMoveDown) gameManager.player.moveY = speed;//下
+  else gameManager.player.moveY = 0;//停止
+
+  //移動代入
   gameManager.player.x += gameManager.player.moveX;
   gameManager.player.y += gameManager.player.moveY;
 }
@@ -195,71 +215,30 @@ function drawUI(){
 }
 
 //Input
+let isMoveRight = false;
+let isMoveLeft = false;
+let isMoveUp = false;
+let isMoveDown = false;
 document.addEventListener('keydown', event => {
+  //一応拡張しやすいように残しておく
   let isKeyMoveRight = event.code === getKeyBind('moveRight');
   let isKeyMoveLeft = event.code === getKeyBind('moveLeft');
   let isKeyMoveUp = event.code === getKeyBind('moveUp');
   let isKeyMoveDown = event.code === getKeyBind('moveDown');
-  let speed = gameManager.player.moveSpeed;
 
-  if(isKeyMoveRight && !isKeyMoveLeft && gameManager.player.x <= 710)
-  {
-    if(isKeyMoveUp){
-      //右上
-      gameManager.player.moveX = speed / 2;
-      gameManager.player.moveY = -speed / 2;
-    }else if(isKeyMoveDown){
-      //右下
-      gameManager.player.moveX = speed / 2;
-      gameManager.player.moveY = speed / 2;
-    }else{
-      //右
-      gameManager.player.moveX = speed;
-    }
-  }
-  else if(isKeyMoveLeft && !isKeyMoveRight && gameManager.player.x >= 250)
-  {
-    if(isKeyMoveUp){
-      //左上
-      gameManager.player.moveX = -speed / 2;
-      gameManager.player.moveY = -speed / 2;
-    }else if(isKeyMoveDown){
-      //左下
-      gameManager.player.moveX = -speed / 2;
-      gameManager.player.moveY = speed / 2;
-    }else{
-      //左
-      gameManager.player.moveX = -speed;
-    }
-  }
-  else if(isKeyMoveUp && !isKeyMoveDown && gameManager.player.x >= 250)
-  {
-    if(isKeyMoveRight){
-      //右上
-      gameManager.player.moveX = speed / 2;
-      gameManager.player.moveY = -speed / 2;
-    }else if(isKeyMoveLeft){
-      //左上
-      gameManager.player.moveX = -speed / 2;
-      gameManager.player.moveY = -speed / 2;
-    }else{
-      //上
-      gameManager.player.moveY = -speed;
-    }
-  }
-  else if(isKeyMoveDown && !isKeyMoveUp && gameManager.player.x >= 250)
-  {
-    if(isKeyMoveRight){
-      //右下
-      gameManager.player.moveX = speed / 2;
-      gameManager.player.moveY = speed / 2;
-    }else if(isKeyMoveLeft){
-      //左下
-      gameManager.player.moveX = -speed / 2;
-      gameManager.player.moveY = speed / 2;
-    }else{
-      //下
-      gameManager.player.moveY = speed;
-    }
-  }
-})
+  if(isKeyMoveRight) isMoveRight = true;
+  if(isKeyMoveLeft) isMoveLeft = true;
+  if(isKeyMoveUp) isMoveUp = true;
+  if(isKeyMoveDown) isMoveDown = true;
+});
+document.addEventListener('keyup', event => {
+  let isKeyMoveRight = event.code === getKeyBind('moveRight');
+  let isKeyMoveLeft = event.code === getKeyBind('moveLeft');
+  let isKeyMoveUp = event.code === getKeyBind('moveUp');
+  let isKeyMoveDown = event.code === getKeyBind('moveDown');
+
+  if(isKeyMoveRight) isMoveRight = false;
+  if(isKeyMoveLeft) isMoveLeft = false;
+  if(isKeyMoveUp) isMoveUp = false;
+  if(isKeyMoveDown) isMoveDown = false;
+});
