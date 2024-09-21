@@ -98,7 +98,7 @@ function imageLoader(imgNames, imgType){
       img[imageName].onload = () => {
         imageLoadCounter += 1;
         if(imageLoadCounter === imgNames.length){
-          console.log(`${imgType}:画像ロード完了`);
+          //console.log(`${imgType}:画像ロード完了`);
           resolve(img);
         }
       };
@@ -173,13 +173,16 @@ function ticker(){
   drawPlayer();//Player描画
   drawUI();//UI描画
 
-  hitCheck();//当たり判定
+  //当たり判定
+  hitCheckPlayer();
+  hitCheckPlayerShot();
 
   //カウンタ更新
   gameManager.count++;
   gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;
 }
 
+//Player
 //Player プロパティ
 function createPlayer(){
   gameManager.player = {
@@ -253,9 +256,10 @@ function drawPlayer(){
   );
 }
 
+//Shot
 //Shotプロパティ
 function createPlayerShot1(posX, posY){
-  console.log('shot');
+  // console.log('shot');
   gameManager.playerShots.push({
     x: posX,
     y: posY,
@@ -285,6 +289,7 @@ function drawPlayerShots(){
   }
 }
 
+//Enemy
 //Enemy生成Manager
 function enemyCreateManager(){
   createEnemy1(300);
@@ -299,7 +304,8 @@ function createEnemy1(posX){
     height: gameManager.spriteImage.enemy_1.height,
     moveX: 0,
     moveY: 0,//5
-    image: gameManager.spriteImage.enemy_1
+    image: gameManager.spriteImage.enemy_1,
+    died: false
   });
 }
 
@@ -310,7 +316,7 @@ function moveEnemies(){
     enemy.y += enemy.moveY;
   }
   gameManager.enemies = gameManager.enemies.filter(enemy =>
-    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540
+    enemy.x < 710 && enemy.x > 250 && enemy.y > 0 && enemy.y < 540 && !enemy.died
   );
 }
 
@@ -329,6 +335,7 @@ function drawBackground(){
   );
 }
 
+//Star
 //Starプロパティ
 function createBackgroundStar(){
   const size = 1;
@@ -411,8 +418,8 @@ document.addEventListener('keyup', event => {
   if(event.code === getKeyBind('bomb')) isBomb = false;
 });
 
-//当たり判定
-function hitCheck(){
+//Player当たり判定
+function hitCheckPlayer(){
   for(const enemy of gameManager.enemies) {
     const interval = 50;
     const count = gameManager.count;
@@ -443,7 +450,17 @@ function hitCheck(){
   }
 }
 
-//敵側当たり判定
-function hitCheckEnemy(){
-  //
+//PlayerShot当たり判定
+function hitCheckPlayerShot(){
+  for(const enemy of gameManager.enemies){
+    for(const shot of gameManager.playerShots){
+      if(
+        Math.abs(shot.x - enemy.x) < shot.width * 0.8 / 2 + enemy.width * 0.7 / 2 &&
+        Math.abs(shot.y - enemy.y) < shot.height * 0.6 / 2 + enemy.height * 0.7 /2
+      ){
+        //console.log('HIT!!!');
+        enemy.died = true;
+      }
+    }
+  }
 }
