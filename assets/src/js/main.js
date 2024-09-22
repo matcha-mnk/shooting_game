@@ -134,9 +134,11 @@ function titleTicker(){
         break;
       case 1:
         //遊び方へ
+        startHowToPlayScene();
         break;
       case 2:
         //設定へ
+        startSettingScene();
         break;
     }
   }
@@ -156,7 +158,7 @@ function startGameScene(){
   gameManager.timer = setInterval(gameTicker, 30);//カウント開始
 }
 
-//Update
+//GameScene Update
 function gameTicker(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
 
@@ -198,4 +200,16 @@ function gameTicker(){
   //カウンタ更新
   gameManager.count++;
   gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;
+}
+
+
+//HowToPlay Scene
+function startHowToPlayScene(){
+  gameSceneState.changeScene('howToPlayScene');
+}
+
+
+//Setting Scene
+function startSettingScene(){
+  gameSceneState.changeScene('settingScene');
 }

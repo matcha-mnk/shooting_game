@@ -21,13 +21,15 @@ export const gameManager = {
 //ゲーム内シーンの状態
 export const gameSceneState = {
   titleScene: false,
-  keyBindingScene: false,
+  howToPlayScene: false,
+  settingScene: false,
   gameScene: false,
   gameOverScene: false,
 
   changeScene(targetScene){
     this.titleScene = false;
-    this.keyBindingScene = false;
+    this.howToPlayScene = false;
+    this.settingScene = false;
     this.gameScene = false;
     this.gameOverScene = false;
 
@@ -44,7 +46,7 @@ export const gameSceneState = {
 function sceneChangeTest(){
   if(
     gameSceneState.titleScene === false
-    && gameSceneState.keyBindingScene === false
+    && gameSceneState.settingScene === false
     && gameSceneState.gameScene === false
   );//正常
   else console.error('ERROR-sceneChangeTest');
@@ -52,7 +54,7 @@ function sceneChangeTest(){
   gameSceneState.changeScene('keyBindingScene');
   if(
     gameSceneState.titleScene === false
-    && gameSceneState.keyBindingScene === true
+    && gameSceneState.settingScene === true
     && gameSceneState.gameScene === false
   );//正常
   else console.error('ERROR-sceneChangeTest')
@@ -60,7 +62,7 @@ function sceneChangeTest(){
   gameSceneState.changeScene('titleScene');
   if(
     gameSceneState.titleScene === true
-    && gameSceneState.keyBindingScene === false
+    && gameSceneState.settingScene === false
     && gameSceneState.gameScene === false
   );//正常
   else console.error('ERROR-sceneChangeTest')
@@ -68,7 +70,7 @@ function sceneChangeTest(){
   gameSceneState.changeScene('gameScene');
   if(
     gameSceneState.titleScene === false
-    && gameSceneState.keyBindingScene === false
+    && gameSceneState.settingScene === false
     && gameSceneState.gameScene === true
   );//正常
   else console.error('ERROR-sceneChangeTest');
