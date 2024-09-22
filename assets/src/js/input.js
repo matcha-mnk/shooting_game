@@ -9,7 +9,9 @@ export const isAction ={
   isSlowMove: false,
 
   isShot: false,
-  isBomb: false
+  isBomb: false,
+
+  isMenu: false
 }
 
 
@@ -31,6 +33,9 @@ document.addEventListener('keydown', event => {
   if(event.code === getKeyBind('shot')) isAction.isShot = true;
   //bomb
   if(event.code === getKeyBind('bomb')) isAction.isBomb = true;
+
+  //menu
+  if(event.code === getKeyBind('showMenu')) isAction.isMenu = true;
 });
 document.addEventListener('keyup', event => {
   let isKeyMoveRight = event.code === getKeyBind('moveRight');
@@ -46,4 +51,6 @@ document.addEventListener('keyup', event => {
 
   if(event.code === getKeyBind('shot')) isAction.isShot = false;
   if(event.code === getKeyBind('bomb')) isAction.isBomb = false;
+
+  if(event.code === getKeyBind('showMenu')) isAction.isMenu = false;
 });

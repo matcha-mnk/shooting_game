@@ -20,7 +20,9 @@ let onUpKey = false;
 let onDownKey = false;
 let titleSceneTimer;
 let onMenuKey = false;
-
+let menuTimer;
+let menuSelect = 0;
+let onEnterKey = false;
 
 assetLoader();
 
@@ -59,6 +61,13 @@ function init(){
 function startTitleScene(){
   gameSceneState.changeScene('titleScene');
 
+  titleSceneTimer = setInterval(titleTicker, 30);
+}
+
+//Title Update
+function titleTicker(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
+
   //タイトル画面描画
   ctx.textAlign = 'center';
   ctx.font = 'bold 48px misaki_gothic_2nd';
@@ -70,13 +79,6 @@ function startTitleScene(){
   ctx.fillText(`${getKeyBind('moveUp')}:Up   `, canvas.width-5, canvas.height-40);
   ctx.fillText(`${getKeyBind('moveDown')}:Down `, canvas.width-5, canvas.height-25);
   ctx.fillText(`${getKeyBind('shot')}:Enter`, canvas.width-5, canvas.height-10);
-
-  titleSceneTimer = setInterval(titleTicker, 30);
-}
-
-//Title Update
-function titleTicker(){
-  ctx.clearRect(0, canvas.height/2-50, canvas.width, 200);//画面クリア
 
   //Select 入力検知
   if(isAction.isMoveUp && titleSelect > 0 && !onUpKey){
@@ -124,7 +126,8 @@ function titleTicker(){
   }
 
   //Enter 入力検知
-  if(isAction.isShot){
+  if(isAction.isShot && !onEnterKey){
+    onEnterKey = true;
     clearInterval(titleSceneTimer);
 
     switch(titleSelect){
@@ -141,6 +144,8 @@ function titleTicker(){
         startSettingScene();
         break;
     }
+  }else if(!isAction.isShot){
+    onEnterKey = false;
   }
 }
 
@@ -190,16 +195,173 @@ function gameTicker(){
   hitCheckPlayerShot();
 
   //Menu 入力検知
-  if(isAction.isMenuKey && !onMenuKey){
+  if(isAction.isMenu && !onMenuKey){
     onMenuKey = true;
     //メニュー処理
-  }else if(!isAction.isMenuKey){
+    startMenu();
+  }else if(!isAction.isMenu){
     onMenuKey = false;
   }
 
   //カウンタ更新
   gameManager.count++;
   gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;
+}
+
+//Menu
+function startMenu(){
+  clearInterval(gameManager.timer);//Gameストップ
+
+  menuTimer = setInterval(menuTicker, 30);
+}
+
+//Menu Update
+function menuTicker(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
+
+  drawBackground();//Background描画
+  drawBackgroundStars();//Star描画
+  drawEnemyShot();//EnemyShot描画
+  drawEnemies();//Enemy描画
+  drawPlayerShots();//Shot描画
+  drawPlayer();//Player描画
+  drawUI();//UI描画
+
+
+  //Menu 入力検知
+  if(isAction.isMenu && !onMenuKey){
+    onMenuKey = true;
+    clearInterval(menuTimer);
+    gameManager.timer = setInterval(gameTicker, 30);//Game再開
+  }else if(!isAction.isMenu){
+    onMenuKey = false;
+  }
+
+  //Enter 入力検知
+  if(isAction.isShot && !onEnterKey){
+    onEnterKey = true;
+    switch(menuSelect){
+      case 0:
+        clearInterval(menuTimer);
+        gameManager.timer = setInterval(gameTicker, 30);//Game再開
+        break;
+      case 1:
+        //本当に？
+        menuSelect = 2;
+        break;
+      case 2:
+        clearInterval(menuTimer);
+        clearInterval(gameManager.timer);
+        startTitleScene();
+        menuSelect = 0;
+        break;
+      case 3:
+        menuSelect = 0;
+        break;
+    }
+  }else if(!isAction.isShot){
+    onEnterKey = false;
+  }
+
+  //Select 入力検知
+  if(isAction.isMoveUp && menuSelect === 1 && !onUpKey){
+    onUpKey = true;
+    menuSelect--;
+  }else if(!isAction.isMoveUp){
+    onUpKey = false;
+  }
+  if(isAction.isMoveDown && menuSelect === 0 && !onDownKey){
+    onDownKey = true;
+    menuSelect++;
+  }else if(!isAction.isMoveDown){
+    onDownKey = false;
+  }
+  if(isAction.isMoveUp && menuSelect === 3 && !onUpKey){
+    onUpKey = true;
+    menuSelect--;
+  }else if(!isAction.isMoveUp){
+    onUpKey = false;
+  }
+  if(isAction.isMoveDown && menuSelect === 2 && !onDownKey){
+    onDownKey = true;
+    menuSelect++;
+  }else if(!isAction.isMoveDown){
+    onDownKey = false;
+  }
+
+  //Select 表示切り替え
+  switch(menuSelect){
+    case 0:
+      //薄暗く
+      ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      //Menuテキスト
+      ctx.textAlign = 'center';
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText('pause', canvas.width/2, 200);
+
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillText('ゲームにもどる', canvas.width/2, 250);
+
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillText('タイトルにもどる', canvas.width/2, 290);
+      break;
+    case 1:
+      //薄暗く
+      ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      //Menuテキスト
+      ctx.textAlign = 'center';
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText('pause', canvas.width/2, 200);
+
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillText('ゲームにもどる', canvas.width/2, 250);
+
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillText('タイトルにもどる', canvas.width/2, 290);
+      break;
+    case 2:
+      //薄暗く
+      ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      //Menuテキスト
+      ctx.textAlign = 'center';
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText('タイトルにもどりますか?', canvas.width/2, 200);
+      ctx.fillText('(データはセーブされません)', canvas.width/2, 230);
+
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillText('Yes', canvas.width/2, 280);
+
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillText('No', canvas.width/2, 320);
+      break;
+    case 3:
+      //薄暗く
+      ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      //Menuテキスト
+      ctx.textAlign = 'center';
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText('タイトルにもどりますか?', canvas.width/2, 200);
+      ctx.fillText('(データはセーブされません)', canvas.width/2, 230);
+
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillText('Yes', canvas.width/2, 280);
+
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillText('No', canvas.width/2, 320);
+      break;
+  }
 }
 
 
