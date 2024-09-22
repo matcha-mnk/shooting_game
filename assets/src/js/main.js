@@ -23,6 +23,7 @@ let onMenuKey = false;
 let menuTimer;
 let menuSelect = 0;
 let onEnterKey = false;
+let howToPlayTimer;
 
 assetLoader();
 
@@ -55,7 +56,6 @@ function init(){
 
   startTitleScene();
 }
-
 
 //TitleScene
 function startTitleScene(){
@@ -148,7 +148,6 @@ function titleTicker(){
     onEnterKey = false;
   }
 }
-
 
 //GameScene
 function startGameScene(){
@@ -364,12 +363,45 @@ function menuTicker(){
   }
 }
 
-
 //HowToPlay Scene
 function startHowToPlayScene(){
   gameSceneState.changeScene('howToPlayScene');
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
+
+  ctx.textAlign = 'left';
+  ctx.font = '18px misaki_gothic_2nd';
+  ctx.fillStyle = '#dbdbdb';
+  ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+  ctx.textAlign = 'center';
+  ctx.font = '32px misaki_gothic_2nd';
+  ctx.fillText('あそびかた', canvas.width/2, 55);
+
+  ctx.font= '24px misaki_gothic_2nd';
+  ctx.fillText('操作方法(default)', canvas.width/2, 120);
+  ctx.textAlign = 'left';
+  ctx.fillText('Move / Select : Arrow', 330, 180);
+  ctx.fillText('Shot / Enter  : Z', 330, 220);
+  ctx.fillText('Bomb / Cancel : X', 330, 260);
+  ctx.fillText('Slow Move     : Left Shift', 330, 300);
+  ctx.fillText('Open Menu     : Left Ctrl', 330, 340);
+
+  ctx.textAlign = 'center';
+  ctx.fillText('Setting > KeyBind で変更可', canvas.width/2, 400);
+
+  howToPlayTimer = setInterval(howToPlayTicker, 30);
 }
 
+function howToPlayTicker(){
+  if(isAction.isBomb && !onEnterKey){
+    onEnterKey = true;
+    clearInterval(howToPlayTimer);
+    startTitleScene();
+  }else if(!isAction.isBomb){
+    onEnterKey = false;
+  }
+}
 
 //Setting Scene
 function startSettingScene(){
