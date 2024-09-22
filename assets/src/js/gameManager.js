@@ -11,11 +11,13 @@ export const gameManager = {
   uiImage: {},
   playerLevel: 0,
   life: 0,
+  defaultLife: 10,
   isHitPlayerEffect: false,
   oldCountHit: 0,
   oldCountShot: 0,
   onBombKey: false,
   bombs: 0,
+  defaultBombs: 3,
   score: 0,
   count: 0,
   timer: null

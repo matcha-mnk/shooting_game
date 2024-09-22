@@ -20,6 +20,7 @@ export function hitCheckPlayer(){
 
       if(gameManager.life > 0){
         gameManager.life--;
+        gameManager.bombs = gameManager.defaultBombs;
       }else{
         gameSceneState.changeScene('gameOverScene');
       }
@@ -39,6 +40,7 @@ export function hitCheckPlayer(){
 
       if(gameManager.life > 0){
         gameManager.life--;
+        gameManager.bombs = gameManager.defaultBombs;
       }else{
         gameSceneState.changeScene('gameOverScene');
       }

@@ -63,12 +63,12 @@ function init(){
   gameManager.enemies = [];
   gameManager.stars = [];
   gameManager.playerLevel = 0;
-  gameManager.life = 10;
+  gameManager.life = gameManager.defaultLife;
   gameManager.isHitPlayerEffect = false;
   gameManager.oldCountHit = 0;
   gameManager.oldCountShot = 0;
   gameManager.onBombKey = false;
-  gameManager.bombs = 3;
+  gameManager.bombs = gameManager.defaultBombs;
   gameManager.count = 0;
   gameManager.score = 0;
 
