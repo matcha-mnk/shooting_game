@@ -18,6 +18,7 @@ export const gameManager = {
   onBombKey: false,
   bombs: 0,
   defaultBombs: 3,
+  highScore: 0,
   score: 0,
   count: 0,
   timer: null

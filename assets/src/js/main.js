@@ -109,6 +109,11 @@ function titleTicker(){
   ctx.fillText(`${getKeyBind('moveDown')}:Down `, canvas.width-5, canvas.height-25);
   ctx.fillText(`${getKeyBind('shot')}:Enter`, canvas.width-5, canvas.height-10);
 
+  //ハイスコア描画
+  ctx.textAlign = 'center';
+  ctx.font = 'italic bold 24px misaki_gothic_2nd';
+  ctx.fillText('High Score:'+gameManager.highScore, canvas.width/2, canvas.height-20);
+
   //Select 入力検知
   if(isAction.isMoveUp && titleSelect > 0 && !onUpKey){
     playSE('assets/sounds/se-select_1.mp3');
@@ -130,7 +135,9 @@ function titleTicker(){
     case 0:
       ctx.textAlign = 'center';
       ctx.font = 'italic bold 32px misaki_gothic_2nd';
+      ctx.fillStyle = 'aqua';
       ctx.fillText('play', canvas.width/2, 270);
+      ctx.fillStyle = '#dbdbdb';
       ctx.font = '32px misaki_gothic_2nd';
       ctx.fillText('how to play', canvas.width/2, 330);
       ctx.font = '32px misaki_gothic_2nd';
@@ -141,7 +148,9 @@ function titleTicker(){
       ctx.font = '32px misaki_gothic_2nd';
       ctx.fillText('play', canvas.width/2, 270);
       ctx.font = 'italic bold 32px misaki_gothic_2nd';
+      ctx.fillStyle = 'aqua';
       ctx.fillText('how to play', canvas.width/2, 330);
+      ctx.fillStyle = '#dbdbdb';
       ctx.font = '32px misaki_gothic_2nd';
       ctx.fillText('setting', canvas.width/2, 390);
       break;
@@ -152,7 +161,9 @@ function titleTicker(){
       ctx.font = '32px misaki_gothic_2nd';
       ctx.fillText('how to play', canvas.width/2, 330);
       ctx.font = 'italic bold 32px misaki_gothic_2nd';
+      ctx.fillStyle = 'aqua';
       ctx.fillText('setting', canvas.width/2, 390);
+      ctx.fillStyle = '#dbdbdb';
       break;
   }
 
