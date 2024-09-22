@@ -7,7 +7,7 @@ import { drawBackground, createBackgroundStar, moveBackgroundStars, drawBackgrou
 import { drawUI } from './ui.js';
 import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
-import { getKeyBind } from './keyBinder.js';
+import { getKeyBind, setKeyBind } from './keyBinder.js';
 import { playSE, playAudio, stopAudio } from './assetsLoader.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
@@ -18,8 +18,12 @@ const ctx = canvas.getContext('2d');
 
 let onUpKey = false;
 let onDownKey = false;
+let onRightKey = false;
+let onLeftKey =false;
 let onMenuKey = false;
 let onEnterKey = false;
+let onCancelKey = false;
+let isKeyBinding = false;
 let titleSelect = 0;
 let menuSelect = 0;
 let gameOverSelect = 0;
@@ -79,13 +83,18 @@ function init(){
 
   onUpKey = false;
   onDownKey = false;
+  onRightKey = false;
+  onLeftKey = false;
   onMenuKey = false;
   onEnterKey = false;
+  onCancelKey = false;
+  isKeyBinding = false;
   titleSelect = 0;
   menuSelect = 0;
   gameOverSelect = 0;
 }
 
+//最初 クリック待ち
 document.addEventListener('click', () =>  {
   if(gameSceneState.loading === true) startTitleScene();
 });
@@ -458,12 +467,13 @@ function startHowToPlayScene(){
 
 //HowToPlay Update
 function howToPlayTicker(){
-  if(isAction.isBomb && !onEnterKey){
-    onEnterKey = true;
+  //Back 入力検知
+  if(isAction.isBomb && !onCancelKey){
+    onCancelKey = true;
     clearInterval(howToPlayTimer);
     startTitleScene();
   }else if(!isAction.isBomb){
-    onEnterKey = false;
+    onCancelKey = false;
   }
 }
 
@@ -471,36 +481,355 @@ function howToPlayTicker(){
 function startSettingScene(){
   gameSceneState.changeScene('settingScene');
 
-  settingTimer = setInterval(settingTicker, 30);
+  settingTimer = setInterval(settingSceneTicker, 30);
 }
 
 //Setting Update
-function settingTicker(){
+function settingSceneTicker(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
 
+  //見出しText 描画
   ctx.textAlign = 'center';
   ctx.font = 'bold 32px misaki_gothic_2nd';
   ctx.fillText('setting', canvas.width/2, 55);
 
   ctx.font= '24px misaki_gothic_2nd';
   ctx.fillText('KeyBind', canvas.width/2 -300, 120);
-  ctx.textAlign = 'left';
-  ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
-  ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
-  ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
-  ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
-  ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
-  ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
-  ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
-  ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
-  ctx.fillText('Select > Enter > 変更したいキー', 30, 500);
 
-  ctx.textAlign = 'center';
   ctx.font= '24px misaki_gothic_2nd';
   ctx.fillText('Sound', canvas.width/2 +300, 120);
+
+
+  //Select 入力検知
+  if(!isKeyBinding){
+    if(isAction.isMoveUp && settingSelect > 0 && settingSelect < 8 && !onUpKey){
+      playSE('assets/sounds/se-select_1.mp3');
+      onUpKey = true;
+      settingSelect--;
+    }else if(!isAction.isMoveUp){
+      onUpKey = false;
+    }
+    if(isAction.isMoveDown && settingSelect < 7 && !onDownKey){
+      playSE('assets/sounds/se-select_1.mp3');
+      onDownKey = true;
+      settingSelect++;
+    }else if(!isAction.isMoveDown){
+      onDownKey = false;
+    }
+    if(isAction.isMoveUp && settingSelect === 9 && !onUpKey){
+      playSE('assets/sounds/se-select_1.mp3');
+      onUpKey = true;
+      settingSelect--;
+    }else if(!isAction.isMoveUp){
+      onUpKey = false;
+    }
+    if(isAction.isMoveDown && settingSelect === 8 && !onDownKey){
+      playSE('assets/sounds/se-select_1.mp3');
+      onDownKey = true;
+      settingSelect++;
+    }else if(!isAction.isMoveDown){
+      onDownKey = false;
+    }
+    if(isAction.isMoveRight && settingSelect >= 0 && settingSelect <= 7 && !onRightKey){
+      playSE('assets/sounds/se-select_1.mp3');
+      onRightKey = true;
+      settingSelect = 8;
+    }else if(!isAction.isMoveRight){
+      onRightKey = false;
+    }
+    if(isAction.isMoveLeft && settingSelect >= 8 && settingSelect <= 9 && !onLeftKey){
+      playSE('assets/sounds/se-select_1.mp3');
+      onLeftKey = true;
+      settingSelect = 0;
+    }else if(!isAction.isMoveLeft){
+      onLeftKey = false;
+    }
+  }
+
+  //Select 表示切り替え
   ctx.textAlign = 'left';
-  ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
-  ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+  switch(settingSelect){
+    case 0:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      else ctx.fillText(`Move up      :`, 30, 180-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 1:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      else ctx.fillText(`Move down    :`, 30, 220-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 2:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      else ctx.fillText(`Move right   :`, 30, 260-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 3:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      else ctx.fillText(`Move left    :`, 30, 300-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 4:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      else ctx.fillText(`Shot / Enter :`, 30, 340-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 5:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      else ctx.fillText(`Bomb / Cancel:`, 30, 380-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 6:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      else ctx.fillText(`Slow Move    :`, 30, 420-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 7:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillStyle = 'aqua';
+      if(!isKeyBinding) ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      else ctx.fillText(`Open Menu    :`, 30, 460-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 8:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillStyle = 'aqua';
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      break;
+    case 9:
+      ctx.textAlign = 'left';
+      ctx.font = '18px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.fillText(`press ${getKeyBind('bomb')} to go back`, 20, 45);
+
+      ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+      ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+      ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+      ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+      ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+      ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+      ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+      ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+      ctx.fillText(`Select > ${getKeyBind('shot')} > 変更したいキー`, 30, 500);
+
+      ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+      ctx.fillStyle = 'aqua';
+      ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
+      ctx.fillStyle = '#dbdbdb';
+      break;
+  }
+
+  //KeyBind
+  document.addEventListener('keydown', event => {
+    if(isKeyBinding){
+      isKeyBinding = false;
+      switch(settingSelect){
+        case 0:
+          setKeyBind('moveUp', event.code);
+          break;
+        case 1:
+          setKeyBind('moveDown', event.code);
+          break;
+        case 2:
+          setKeyBind('moveRight', event.code);
+          break;
+        case 3:
+          setKeyBind('moveLeft', event.code);
+          break;
+        case 4:
+          setKeyBind('shot', event.code);
+          break;
+        case 5:
+          setKeyBind('bomb', event.code);
+          break;
+        case 6:
+          setKeyBind('slowMove', event.code);
+          break;
+        case 7:
+          setKeyBind('moveLeft', event.code);
+          break;
+      }
+    }
+  });
+
+  //Enter 入力検知
+  if(isAction.isShot && !onEnterKey){
+    onEnterKey = true;
+    clearInterval(settingSceneTicker);
+    playSE('assets/sounds/se-enter_1.mp3');
+
+    if(settingSelect >= 0 && settingSelect <= 7 && !isKeyBinding){
+      isKeyBinding = true;
+    }
+    else if(settingSelect === 8){
+      gameManager.isBgm = !gameManager.isBgm;
+      if(!gameManager.isBgm) stopAudio();
+      else playAudio('assets/sounds/bgm-title_1.mp3');
+    }else if(settingSelect === 9){
+      gameManager.isSe = !gameManager.isSe;
+    }
+  }else if(!isAction.isShot){
+    onEnterKey = false;
+  }
+
+  //Cancel 入力検知
+  if(isAction.isBomb && !onCancelKey){
+    onCancelKey = true;
+    clearInterval(settingTimer);
+    startTitleScene();
+  }else if(!isAction.isBomb){
+    onCancelKey = false;
+  }
 }
 
 //GameOver Scene
