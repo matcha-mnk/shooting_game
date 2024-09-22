@@ -333,7 +333,7 @@ function menuTicker(){
       ctx.textAlign = 'center';
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillStyle = '#dbdbdb';
-      ctx.fillText('タイトルにもどりますか?', canvas.width/2, 200);
+      ctx.fillText('本当にタイトルに戻りますか?', canvas.width/2, 200);
       ctx.fillText('(データはセーブされません)', canvas.width/2, 230);
 
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
@@ -351,7 +351,7 @@ function menuTicker(){
       ctx.textAlign = 'center';
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillStyle = '#dbdbdb';
-      ctx.fillText('タイトルにもどりますか?', canvas.width/2, 200);
+      ctx.fillText('本当にタイトルに戻りますか?', canvas.width/2, 200);
       ctx.fillText('(データはセーブされません)', canvas.width/2, 230);
 
       ctx.font = '24px misaki_gothic_2nd';
