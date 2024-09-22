@@ -1,6 +1,7 @@
 import { gameManager } from './gameManager.js';
 import { isAction } from './input.js';
 import { createPlayerShot1 } from './playerShot.js';
+import { playSE } from './assetsLoader.js';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -27,6 +28,7 @@ export function shotPlayer(){
     if((count - gameManager.oldCountShot) > interval){
       gameManager.oldCountShot = count;
       createPlayerShot1(gameManager.player.x, gameManager.player.y - 5)//弾発射
+      playSE('assets/sounds/se-shot_1.mp3');
       //console.log('SHOT!');
     }
   }

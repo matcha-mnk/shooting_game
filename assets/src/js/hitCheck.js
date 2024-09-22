@@ -16,6 +16,7 @@ export function hitCheckPlayer(){
       gameManager.oldCountHit = count;
       //console.log('HIT!');
       gameManager.isHitPlayerEffect = true;
+      playSE('assets/sounds/se-died_1.mp3');
 
       if(gameManager.life > 0){
         gameManager.life--;
@@ -34,6 +35,7 @@ export function hitCheckPlayer(){
     ){
       gameManager.oldCountHit = count;
       gameManager.isHitPlayerEffect = true;
+      playSE('assets/sounds/se-died_1.mp3');
 
       if(gameManager.life > 0){
         gameManager.life--;

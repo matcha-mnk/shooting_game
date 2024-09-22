@@ -24,6 +24,7 @@ export function imageLoad(imgNames, imgType){
 
 const audioCtx = new AudioContext();
 let audioSource;
+let seSource;
 
 async function fetchAudio(audioUrl){
   const response = await fetch(audioUrl);
@@ -51,9 +52,9 @@ export function stopAudio(){
 
 export async function playSE(audioUrl){
   const audioBuffer = await fetchAudio(audioUrl);
-  audioSource = audioCtx.createBufferSource();
-  audioSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
+  seSource = audioCtx.createBufferSource();
+  seSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
 
-  audioSource.connect(audioCtx.destination);
-  audioSource.start();
+  seSource.connect(audioCtx.destination);
+  seSource.start();
 }

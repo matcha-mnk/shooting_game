@@ -8,7 +8,7 @@ import { drawUI } from './ui.js';
 import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
 import { getKeyBind } from './keyBinder.js';
-import { playAudio, stopAudio } from './assetsLoader.js';
+import { playSE, playAudio, stopAudio } from './assetsLoader.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
 import { isAction } from './input.js';
@@ -112,12 +112,14 @@ function titleTicker(){
 
   //Select 入力検知
   if(isAction.isMoveUp && titleSelect > 0 && !onUpKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onUpKey = true;
     titleSelect--;
   }else if(!isAction.isMoveUp){
     onUpKey = false;
   }
   if(isAction.isMoveDown && titleSelect < 2 && !onDownKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onDownKey = true;
     titleSelect++;
   }else if(!isAction.isMoveDown){
@@ -159,6 +161,7 @@ function titleTicker(){
   if(isAction.isShot && !onEnterKey){
     onEnterKey = true;
     clearInterval(titleSceneTimer);
+    playSE('assets/sounds/se-enter_1.mp3');
 
     switch(titleSelect){
       case 0:
@@ -277,7 +280,9 @@ function menuTicker(){
 
   //Enter 入力検知
   if(isAction.isShot && !onEnterKey){
+    playSE('assets/sounds/se-enter_1.mp3');
     onEnterKey = true;
+
     switch(menuSelect){
       case 0:
         clearInterval(menuTimer);
@@ -303,24 +308,28 @@ function menuTicker(){
 
   //Select 入力検知
   if(isAction.isMoveUp && menuSelect === 1 && !onUpKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onUpKey = true;
     menuSelect--;
   }else if(!isAction.isMoveUp){
     onUpKey = false;
   }
   if(isAction.isMoveDown && menuSelect === 0 && !onDownKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onDownKey = true;
     menuSelect++;
   }else if(!isAction.isMoveDown){
     onDownKey = false;
   }
   if(isAction.isMoveUp && menuSelect === 3 && !onUpKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onUpKey = true;
     menuSelect--;
   }else if(!isAction.isMoveUp){
     onUpKey = false;
   }
   if(isAction.isMoveDown && menuSelect === 2 && !onDownKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onDownKey = true;
     menuSelect++;
   }else if(!isAction.isMoveDown){
@@ -468,7 +477,9 @@ function gameOverTicker(){
 
   //Enter 入力検知
   if(isAction.isShot && !onEnterKey){
+    playSE('assets/sounds/se-enter_1.mp3');
     onEnterKey = true;
+
     switch(gameOverSelect){
       case 0:
         //TASK:スコア保存
@@ -490,12 +501,14 @@ function gameOverTicker(){
 
   //Select 入力検知
   if(isAction.isMoveUp && gameOverSelect === 1 && !onUpKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onUpKey = true;
     gameOverSelect--;
   }else if(!isAction.isMoveUp){
     onUpKey = false;
   }
   if(isAction.isMoveDown && gameOverSelect === 0 && !onDownKey){
+    playSE('assets/sounds/se-select_1.mp3');
     onDownKey = true;
     gameOverSelect++;
   }else if(!isAction.isMoveDown){
