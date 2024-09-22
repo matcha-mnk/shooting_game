@@ -1,23 +1,24 @@
 import { gameManager } from './gameManager.js';
 import { gameOver } from './ui.js';
 
-let oldCountHit = 0;//リファクタしてね
+let oldCountHit = 0;
 
 
 //Player当たり判定
 export function hitCheckPlayer(){
-  for(const enemy of gameManager.enemies) {
-    const interval = 25;
-    const count = gameManager.count;
+  const interval = 25;
+  const count = gameManager.count;
 
+  //EnemyとHit
+  for(const enemy of gameManager.enemies) {
     if(
       Math.abs(gameManager.player.x - enemy.x) < gameManager.player.width / 16 + enemy.width * 0.5 / 2 &&
       Math.abs(gameManager.player.y - enemy.y) < gameManager.player.height / 16 + enemy.height * 0.5 /2 &&
       (count - oldCountHit) > interval
     ){
       oldCountHit = count;
-      //TASK:被弾表現
       //console.log('HIT!');
+      gameManager.isHitPlayerEffect = true;
 
       if(gameManager.life > 0){
         gameManager.life--;
@@ -27,16 +28,16 @@ export function hitCheckPlayer(){
     }
   }
 
+  //EnemyShotとHit
   for (const shot of gameManager.enemyShots){
-    const interval = 25;
-    const count = gameManager.count;
-
     if(
       Math.abs(gameManager.player.x - shot.x) < gameManager.player.width / 16 + shot.width * 0.5 / 2 &&
       Math.abs(gameManager.player.y - shot.y) < gameManager.player.height / 16 + shot.height * 0.5 /2 &&
       (count - oldCountHit) > interval
     ){
       oldCountHit = count;
+      gameManager.isHitPlayerEffect = true;
+
       if(gameManager.life > 0){
         gameManager.life--;
       }else{
@@ -44,6 +45,8 @@ export function hitCheckPlayer(){
       }
     }
   }
+
+  if((count - oldCountHit) > interval && gameManager.isHitPlayerEffect) gameManager.isHitPlayerEffect = false;
 }
 
 //PlayerShot当たり判定

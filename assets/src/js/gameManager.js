@@ -12,6 +12,7 @@ export const gameManager = {
   isGameOver: true,
   playerLevel: 0,
   life: 0,
+  isHitPlayerEffect: false,
   bombs: 0,
   score: 0,
   count: 0,
@@ -76,7 +77,7 @@ function sceneChangeTest(){
 
 //Assets Name
 export const assetsNames ={
-  spriteNames: ['player_1', 'enemy_1'],
+  spriteNames: ['player_1', 'player_1_hit', 'enemy_1'],
   effectNames: ['player_shot_1', 'enemy_shot_1'],
   backgroundNames: ['space_1'],
   uiNames: ['letter_box']

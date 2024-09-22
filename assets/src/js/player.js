@@ -75,8 +75,14 @@ export function movePlayer(){
 
 //Player描画
 export function drawPlayer(){
+  if(gameManager.isHitPlayerEffect && gameManager.count % 6 === 0){
+    gameManager.player.image = gameManager.spriteImage.player_1_hit;
+  }else{
+    gameManager.player.image = gameManager.spriteImage.player_1;
+  }
+
   ctx.drawImage(
-    gameManager.spriteImage.player_1,
+    gameManager.player.image,
     gameManager.player.x - gameManager.player.width / 2,
     gameManager.player.y - gameManager.player.height / 2
   );
