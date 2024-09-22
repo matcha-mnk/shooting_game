@@ -9,7 +9,6 @@ export const gameManager = {
   effectImage: {},
   backgroundImage: {},
   uiImage: {},
-  isGameOver: true,
   playerLevel: 0,
   life: 0,
   isHitPlayerEffect: false,
@@ -24,11 +23,13 @@ export const gameSceneState = {
   titleScene: false,
   keyBindingScene: false,
   gameScene: false,
+  gameOverScene: false,
 
   changeScene(targetScene){
     this.titleScene = false;
     this.keyBindingScene = false;
     this.gameScene = false;
+    this.gameOverScene = false;
 
     if(targetScene in this){
       this[targetScene] = true;

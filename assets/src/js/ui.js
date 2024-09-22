@@ -48,13 +48,12 @@ export function drawUI(){
 
 //GameOver
 export function gameOver(){
-  gameManager.isGameOver = true;
+  gameSceneState.changeScene('keyBindingScene');
+  //GameOver表現
+  ctx.font = '50px misaki_gothic_2nd';
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'center';
+  ctx.fillText(`Game Over`, 480, 270);
 
-        //GameOver表現
-        ctx.font = '50px misaki_gothic_2nd';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = 'center';
-        ctx.fillText(`Game Over`, 480, 270);
-
-        clearInterval(gameManager.timer);
+  clearInterval(gameManager.timer);
 }

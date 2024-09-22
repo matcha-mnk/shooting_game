@@ -1,6 +1,6 @@
 //初期設定
 const defaultKeyActions = {
-  showMenu: 'Tab',
+  showMenu: 'ControlLeft',
   moveUp: 'ArrowUp',
   moveDown: 'ArrowDown',
   moveRight: 'ArrowRight',
@@ -11,7 +11,7 @@ const defaultKeyActions = {
 }
 
 let keyActions = {
-  showMenu: 'Tab',
+  showMenu: 'ControlLeft',
   moveUp: 'ArrowUp',
   moveDown: 'ArrowDown',
   moveRight: 'ArrowRight',

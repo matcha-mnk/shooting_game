@@ -6,7 +6,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 let oldCountShot = 0;
-let isDownKey = false;
+let onBombKey = false;
 
 
 //Player プロパティ
@@ -35,13 +35,13 @@ export function shotPlayer(){
     }
   }
 
-  if(isAction.isBomb && !isDownKey && gameManager.bombs > 0){
-    isDownKey = true;
+  if(isAction.isBomb && !onBombKey && gameManager.bombs > 0){
+    onBombKey = true;
     gameManager.bombs--;
     //TASK:Bomb発射
     //console.log('BOMB!');
   }else if (!isAction.isBomb){
-    isDownKey = false;
+    onBombKey = false;
   }
 }
 
