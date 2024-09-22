@@ -153,7 +153,7 @@ function startGameScene(){
 
   //Player初期設定
   createPlayer();
-  gameManager.player.moveSpeed = 10;
+  gameManager.player.moveSpeed = 8;
   gameManager.player.x = canvas.width / 2;
   gameManager.player.y = canvas.height / 2 + 220;
 

@@ -5,14 +5,14 @@ const ctx = canvas.getContext('2d');
 
 
 //プロパティ
-export function createEnemyShot1(posX, posY){
+export function createEnemyShot1(posX, posY, mX, mY){
   gameManager.enemyShots.push({
     x: posX,
     y: posY,
     width: gameManager.effectImage.enemy_shot_1.width,
     height: gameManager.effectImage.enemy_shot_1.height,
-    moveX: 0,
-    moveY: 15,
+    moveX: mX,
+    moveY: mY,
     image: gameManager.effectImage.enemy_shot_1,
     isDied: false
   })

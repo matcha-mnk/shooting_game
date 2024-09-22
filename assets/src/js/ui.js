@@ -1,4 +1,4 @@
-import { gameManager } from './gameManager.js';
+import { gameManager, gameSceneState } from './gameManager.js';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -48,7 +48,7 @@ export function drawUI(){
 
 //GameOver
 export function gameOver(){
-  gameSceneState.changeScene('keyBindingScene');
+  gameSceneState.changeScene('gameOverScene');
   //GameOver表現
   ctx.font = '50px misaki_gothic_2nd';
   ctx.fillStyle = 'white';

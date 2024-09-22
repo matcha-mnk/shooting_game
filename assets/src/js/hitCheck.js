@@ -54,8 +54,8 @@ export function hitCheckPlayerShot(){
   for(const enemy of gameManager.enemies){
     for(const shot of gameManager.playerShots){
       if(
-        Math.abs(shot.x - enemy.x) < shot.width * 0.8 / 2 + enemy.width * 0.7 / 2 &&
-        Math.abs(shot.y - enemy.y) < shot.height * 0.6 / 2 + enemy.height * 0.7 /2
+        Math.abs(shot.x - enemy.x) < shot.width * 0.3 / 2 + enemy.width * 0.7 / 2 &&
+        Math.abs(shot.y - enemy.y) < shot.height * 0.3 / 2 + enemy.height * 0.7 /2
       ){
         //console.log('HIT!!!');
         enemy.isDied = true;//Enemy消す

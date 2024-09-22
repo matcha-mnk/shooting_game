@@ -26,7 +26,7 @@ export function createPlayer(){
 //Player Shot
 export function shotPlayer(){
   if(isAction.isShot){
-    const interval = 2;
+    const interval = 3;
     const count = gameManager.count;
     if((count - oldCountShot) > interval){
       oldCountShot = count;
@@ -48,7 +48,7 @@ export function shotPlayer(){
 //Player移動
 export function movePlayer(){
   let speed = gameManager.player.moveSpeed;
-  const slowSpeedRatio = 0.2;
+  const slowSpeedRatio = 0.4;
 
   //移動計算
   if((isAction.isMoveRight || isAction.isMoveLeft) && (isAction.isMoveUp || isAction.isMoveDown)){
