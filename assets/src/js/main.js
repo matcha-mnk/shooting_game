@@ -49,7 +49,8 @@ async function assetLoader(){
   ctx.textAlign = 'center';
   ctx.font = '28px misaki_gothic_2nd';
   ctx.fillStyle = '#dbdbdb';
-  ctx.fillText('Please click or press any key', canvas.width/2, canvas.height/2);
+  ctx.fillText('Please click', canvas.width/2, canvas.height/2-25);
+  ctx.fillText('※BGM / SE がでます', canvas.width/2, canvas.height/2+25);
 
   gameSceneState.changeScene('loading');
 }
@@ -83,13 +84,11 @@ function init(){
 document.addEventListener('click', () =>  {
   if(gameSceneState.loading === true) startTitleScene();
 });
-document.addEventListener('keydown', () =>  {
-  if(gameSceneState.loading === true) startTitleScene();
-});
 
 //TitleScene
 function startTitleScene(){
   gameSceneState.changeScene('titleScene');
+  stopAudio();
   playAudio('assets/sounds/bgm-title_1.mp3');
   titleSceneTimer = setInterval(titleTicker, 30);
 }
