@@ -21,3 +21,39 @@ export function imageLoad(imgNames, imgType){
     }
   })
 }
+
+const audioCtx = new AudioContext();
+let audioSource;
+
+async function fetchAudio(audioUrl){
+  const response = await fetch(audioUrl);
+  const arrayBuffer = await response.arrayBuffer();
+  return arrayBuffer;
+}
+
+export async function playAudio(audioUrl){
+  const audioBuffer = await fetchAudio(audioUrl);
+  audioSource = audioCtx.createBufferSource();
+  audioSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
+  audioSource.loop = true;
+
+  audioSource.connect(audioCtx.destination);
+  audioSource.start();
+}
+
+export function stopAudio(){
+  if(audioSource){
+    audioSource.stop();
+    audioSource.disconnect();
+    audioSource = null;
+  }
+}
+
+export async function playSE(audioUrl){
+  const audioBuffer = await fetchAudio(audioUrl);
+  audioSource = audioCtx.createBufferSource();
+  audioSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
+
+  audioSource.connect(audioCtx.destination);
+  audioSource.start();
+}

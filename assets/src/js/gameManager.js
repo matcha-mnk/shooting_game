@@ -21,8 +21,12 @@ export const gameManager = {
   timer: null
 };
 
+//gameManager.bgm_title_1.loop = true;
+//gameManager.bgm_game_1.loop = true;
+
 //ゲーム内シーンの状態
 export const gameSceneState = {
+  loading: false,
   titleScene: false,
   howToPlayScene: false,
   settingScene: false,
@@ -30,6 +34,7 @@ export const gameSceneState = {
   gameOverScene: false,
 
   changeScene(targetScene){
+    this.loading = false;
     this.titleScene = false;
     this.howToPlayScene = false;
     this.settingScene = false;
@@ -86,5 +91,7 @@ export const assetsNames ={
   spriteNames: ['player_1', 'player_1_hit', 'enemy_1'],
   effectNames: ['player_shot_1', 'enemy_shot_1'],
   backgroundNames: ['space_1'],
-  uiNames: ['letter_box']
+  uiNames: ['letter_box'],
+  seNames: ['kill_1'],
+  bgmNames: ['title_1', 'game_1', 'game_2']
 }

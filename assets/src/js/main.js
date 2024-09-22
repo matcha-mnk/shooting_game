@@ -8,6 +8,7 @@ import { drawUI } from './ui.js';
 import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
 import { getKeyBind } from './keyBinder.js';
+import { playAudio, stopAudio } from './assetsLoader.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
 import { isAction } from './input.js';
@@ -44,7 +45,13 @@ async function assetLoader(){
   gameManager.backgroundImage = backgroundImage;
   gameManager.uiImage = uiImage;
 
-  startTitleScene();
+
+  ctx.textAlign = 'center';
+  ctx.font = '28px misaki_gothic_2nd';
+  ctx.fillStyle = '#dbdbdb';
+  ctx.fillText('Please click or press any key', canvas.width/2, canvas.height/2);
+
+  gameSceneState.changeScene('loading');
 }
 
 //初期化
@@ -73,10 +80,17 @@ function init(){
   gameOverSelect = 0;
 }
 
+document.addEventListener('click', () =>  {
+  if(gameSceneState.loading === true) startTitleScene();
+});
+document.addEventListener('keydown', () =>  {
+  if(gameSceneState.loading === true) startTitleScene();
+});
+
 //TitleScene
 function startTitleScene(){
   gameSceneState.changeScene('titleScene');
-
+  playAudio('assets/sounds/bgm-title_1.mp3');
   titleSceneTimer = setInterval(titleTicker, 30);
 }
 
@@ -148,6 +162,8 @@ function titleTicker(){
 
     switch(titleSelect){
       case 0:
+        stopAudio();
+        playAudio('assets/sounds/bgm-game_1.mp3');
         //GameSceneへ
         startGameScene();
         break;

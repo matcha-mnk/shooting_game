@@ -1,4 +1,5 @@
 import { gameManager, gameSceneState } from './gameManager.js';
+import { playSE } from './assetsLoader.js';
 
 //Player当たり判定
 export function hitCheckPlayer(){
@@ -57,6 +58,7 @@ export function hitCheckPlayerShot(){
         enemy.isDied = true;//Enemy消す
         shot.isDied = true;//Shot消す
         gameManager.score += enemy.scorePoint;//スコア加算
+        playSE('assets/sounds/se-kill_1.mp3');
       }
     }
   }
