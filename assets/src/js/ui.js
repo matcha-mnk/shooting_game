@@ -40,7 +40,7 @@ export function drawUI(){
   ctx.fillText(`BOMB ${gameManager.bombs}`, 730, 250);
 
 
-  //Count
+  //Count TASK:後で消す!!!
   ctx.font = '24px misaki_gothic_2nd';
   ctx.fillStyle = '#dbdbdb';
   ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);

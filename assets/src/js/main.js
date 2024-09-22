@@ -40,7 +40,7 @@ async function assetLoader(){
   gameManager.backgroundImage = backgroundImage;
   gameManager.uiImage = uiImage;
 
-  init();
+  startTitleScene();
 }
 
 //初期化
@@ -51,10 +51,6 @@ function init(){
   gameManager.bombs = 3;
   gameManager.count = 0;
   gameManager.score = 0;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
-
-  startTitleScene();
 }
 
 //TitleScene
@@ -151,6 +147,8 @@ function titleTicker(){
 
 //GameScene
 function startGameScene(){
+  init();
+
   gameSceneState.changeScene('gameScene');
 
   //Player初期設定
