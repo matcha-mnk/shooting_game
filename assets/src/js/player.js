@@ -5,10 +5,6 @@ import { createPlayerShot1 } from './playerShot.js';
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-let oldCountShot = 0;
-let onBombKey = false;
-
-
 //Player プロパティ
 export function createPlayer(){
   gameManager.player = {
@@ -28,20 +24,20 @@ export function shotPlayer(){
   if(isAction.isShot){
     const interval = 3;
     const count = gameManager.count;
-    if((count - oldCountShot) > interval){
-      oldCountShot = count;
+    if((count - gameManager.oldCountShot) > interval){
+      gameManager.oldCountShot = count;
       createPlayerShot1(gameManager.player.x, gameManager.player.y - 5)//弾発射
       //console.log('SHOT!');
     }
   }
 
-  if(isAction.isBomb && !onBombKey && gameManager.bombs > 0){
-    onBombKey = true;
+  if(isAction.isBomb && !gameManager.onBombKey && gameManager.bombs > 0){
+    gameManager.onBombKey = true;
     gameManager.bombs--;
     //TASK:Bomb発射
     //console.log('BOMB!');
   }else if (!isAction.isBomb){
-    onBombKey = false;
+    gameManager.onBombKey = false;
   }
 }
 

@@ -15,15 +15,19 @@ import { isAction } from './input.js';
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-let titleSelect = 0;
 let onUpKey = false;
 let onDownKey = false;
-let titleSceneTimer;
 let onMenuKey = false;
-let menuTimer;
-let menuSelect = 0;
 let onEnterKey = false;
+let titleSelect = 0;
+let menuSelect = 0;
+let gameOverSelect = 0;
+
+let titleSceneTimer;
+let menuTimer;
 let howToPlayTimer;
+let gameOverTimer;
+
 
 assetLoader();
 
@@ -46,11 +50,27 @@ async function assetLoader(){
 //初期化
 function init(){
   gameManager.timeCounter = 0;
+  gameManager.playerShots = [];
+  gameManager.enemyShots = [];
   gameManager.enemies = [];
-  gameManager.life = 5;
+  gameManager.stars = [];
+  gameManager.playerLevel = 0;
+  gameManager.life = 10;
+  gameManager.isHitPlayerEffect = false;
+  gameManager.oldCountHit = 0;
+  gameManager.oldCountShot = 0;
+  gameManager.onBombKey = false;
   gameManager.bombs = 3;
   gameManager.count = 0;
   gameManager.score = 0;
+
+  onUpKey = false;
+  onDownKey = false;
+  onMenuKey = false;
+  onEnterKey = false;
+  titleSelect = 0;
+  menuSelect = 0;
+  gameOverSelect = 0;
 }
 
 //TitleScene
@@ -200,6 +220,11 @@ function gameTicker(){
     onMenuKey = false;
   }
 
+  //GameOver監視
+  if(gameSceneState.gameOverScene === true){
+    startGameOverScene();
+  }
+
   //カウンタ更新
   gameManager.count++;
   gameManager.timeCounter = (gameManager.timeCounter + 1) & 1000000;
@@ -300,10 +325,10 @@ function menuTicker(){
       ctx.fillText('pause', canvas.width/2, 200);
 
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
-      ctx.fillText('ゲームにもどる', canvas.width/2, 250);
+      ctx.fillText('ゲームに戻る', canvas.width/2, 250);
 
       ctx.font = '24px misaki_gothic_2nd';
-      ctx.fillText('タイトルにもどる', canvas.width/2, 290);
+      ctx.fillText('タイトルに戻る', canvas.width/2, 290);
       break;
     case 1:
       //薄暗く
@@ -317,10 +342,10 @@ function menuTicker(){
       ctx.fillText('pause', canvas.width/2, 200);
 
       ctx.font = '24px misaki_gothic_2nd';
-      ctx.fillText('ゲームにもどる', canvas.width/2, 250);
+      ctx.fillText('ゲームに戻る', canvas.width/2, 250);
 
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
-      ctx.fillText('タイトルにもどる', canvas.width/2, 290);
+      ctx.fillText('タイトルに戻る', canvas.width/2, 290);
       break;
     case 2:
       //薄暗く
@@ -332,7 +357,7 @@ function menuTicker(){
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillStyle = '#dbdbdb';
       ctx.fillText('本当にタイトルに戻りますか?', canvas.width/2, 200);
-      ctx.fillText('(データはセーブされません)', canvas.width/2, 230);
+      ctx.fillText('(スコアはセーブされません)', canvas.width/2, 230);
 
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
       ctx.fillText('Yes', canvas.width/2, 280);
@@ -350,7 +375,7 @@ function menuTicker(){
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillStyle = '#dbdbdb';
       ctx.fillText('本当にタイトルに戻りますか?', canvas.width/2, 200);
-      ctx.fillText('(データはセーブされません)', canvas.width/2, 230);
+      ctx.fillText('(スコアはセーブされません)', canvas.width/2, 230);
 
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillText('Yes', canvas.width/2, 280);
@@ -404,4 +429,98 @@ function howToPlayTicker(){
 //Setting Scene
 function startSettingScene(){
   gameSceneState.changeScene('settingScene');
+}
+
+//GameOver Scene
+function startGameOverScene(){
+  clearInterval(gameManager.timer);
+
+  gameOverTimer = setInterval(gameOverTicker, 30);
+}
+
+function gameOverTicker(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
+
+  drawBackground();//Background描画
+  drawBackgroundStars();//Star描画
+  drawEnemyShot();//EnemyShot描画
+  drawEnemies();//Enemy描画
+  drawPlayerShots();//Shot描画
+  drawPlayer();//Player描画
+  drawUI();//UI描画
+
+
+  //Enter 入力検知
+  if(isAction.isShot && !onEnterKey){
+    onEnterKey = true;
+    switch(gameOverSelect){
+      case 0:
+        //TASK:スコア保存
+        //もう一度
+        clearInterval(gameOverTimer);
+        startGameScene();
+        break;
+      case 1:
+        //TASK:スコア保存
+        //タイトルへ
+        clearInterval(gameOverTimer);
+        startTitleScene();
+        gameOverSelect = 0;
+        break;
+    }
+  }else if(!isAction.isShot){
+    onEnterKey = false;
+  }
+
+  //Select 入力検知
+  if(isAction.isMoveUp && gameOverSelect === 1 && !onUpKey){
+    onUpKey = true;
+    gameOverSelect--;
+  }else if(!isAction.isMoveUp){
+    onUpKey = false;
+  }
+  if(isAction.isMoveDown && gameOverSelect === 0 && !onDownKey){
+    onDownKey = true;
+    gameOverSelect++;
+  }else if(!isAction.isMoveDown){
+    onDownKey = false;
+  }
+
+  //Select 表示切り替え
+  switch(gameOverSelect){
+    case 0:
+      //薄暗く
+      ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      //GameOver描画
+      ctx.font = '50px misaki_gothic_2nd';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Game Over`, 480, 200);
+
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillText('やりなおす', canvas.width/2, 250);
+
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillText('タイトルに戻る', canvas.width/2, 290);
+      break;
+    case 1:
+      //薄暗く
+      ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      //GameOver描画
+      ctx.font = '50px misaki_gothic_2nd';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Game Over`, 480, 200);
+
+      ctx.font = '24px misaki_gothic_2nd';
+      ctx.fillText('やりなおす', canvas.width/2, 250);
+
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillText('タイトルに戻る', canvas.width/2, 290);
+      break;
+  }
 }

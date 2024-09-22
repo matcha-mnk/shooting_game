@@ -1,4 +1,4 @@
-import { gameManager, gameSceneState } from './gameManager.js';
+import { gameManager } from './gameManager.js';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -44,16 +44,4 @@ export function drawUI(){
   ctx.font = '24px misaki_gothic_2nd';
   ctx.fillStyle = '#dbdbdb';
   ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
-}
-
-//GameOver
-export function gameOver(){
-  gameSceneState.changeScene('gameOverScene');
-  //GameOver表現
-  ctx.font = '50px misaki_gothic_2nd';
-  ctx.fillStyle = 'white';
-  ctx.textAlign = 'center';
-  ctx.fillText(`Game Over`, 480, 270);
-
-  clearInterval(gameManager.timer);
 }

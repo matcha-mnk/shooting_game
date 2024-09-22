@@ -1,8 +1,4 @@
-import { gameManager } from './gameManager.js';
-import { gameOver } from './ui.js';
-
-let oldCountHit = 0;
-
+import { gameManager, gameSceneState } from './gameManager.js';
 
 //Player当たり判定
 export function hitCheckPlayer(){
@@ -14,16 +10,16 @@ export function hitCheckPlayer(){
     if(
       Math.abs(gameManager.player.x - enemy.x) < gameManager.player.width / 16 + enemy.width * 0.5 / 2 &&
       Math.abs(gameManager.player.y - enemy.y) < gameManager.player.height / 16 + enemy.height * 0.5 /2 &&
-      (count - oldCountHit) > interval
+      (count - gameManager.oldCountHit) > interval
     ){
-      oldCountHit = count;
+      gameManager.oldCountHit = count;
       //console.log('HIT!');
       gameManager.isHitPlayerEffect = true;
 
       if(gameManager.life > 0){
         gameManager.life--;
       }else{
-        gameOver();
+        gameSceneState.changeScene('gameOverScene');
       }
     }
   }
@@ -33,20 +29,20 @@ export function hitCheckPlayer(){
     if(
       Math.abs(gameManager.player.x - shot.x) < gameManager.player.width / 16 + shot.width * 0.5 / 2 &&
       Math.abs(gameManager.player.y - shot.y) < gameManager.player.height / 16 + shot.height * 0.5 /2 &&
-      (count - oldCountHit) > interval
+      (count - gameManager.oldCountHit) > interval
     ){
-      oldCountHit = count;
+      gameManager.oldCountHit = count;
       gameManager.isHitPlayerEffect = true;
 
       if(gameManager.life > 0){
         gameManager.life--;
       }else{
-        gameOver();
+        gameSceneState.changeScene('gameOverScene');
       }
     }
   }
 
-  if((count - oldCountHit) > interval && gameManager.isHitPlayerEffect) gameManager.isHitPlayerEffect = false;
+  if((count - gameManager.oldCountHit) > interval && gameManager.isHitPlayerEffect) gameManager.isHitPlayerEffect = false;
 }
 
 //PlayerShot当たり判定
