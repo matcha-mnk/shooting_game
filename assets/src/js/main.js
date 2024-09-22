@@ -23,11 +23,13 @@ let onEnterKey = false;
 let titleSelect = 0;
 let menuSelect = 0;
 let gameOverSelect = 0;
+let settingSelect = 0;
 
 let titleSceneTimer;
 let menuTimer;
 let howToPlayTimer;
 let gameOverTimer;
+let settingTimer;
 
 
 assetLoader();
@@ -51,6 +53,9 @@ async function assetLoader(){
   ctx.fillStyle = '#dbdbdb';
   ctx.fillText('Please click', canvas.width/2, canvas.height/2-25);
   ctx.fillText('※BGM / SE がでます', canvas.width/2, canvas.height/2+25);
+
+  gameManager.isBgm = true;
+  gameManager.isSe = true;
 
   gameSceneState.changeScene('loading');
 }
@@ -451,6 +456,7 @@ function startHowToPlayScene(){
   howToPlayTimer = setInterval(howToPlayTicker, 30);
 }
 
+//HowToPlay Update
 function howToPlayTicker(){
   if(isAction.isBomb && !onEnterKey){
     onEnterKey = true;
@@ -464,6 +470,37 @@ function howToPlayTicker(){
 //Setting Scene
 function startSettingScene(){
   gameSceneState.changeScene('settingScene');
+
+  settingTimer = setInterval(settingTicker, 30);
+}
+
+//Setting Update
+function settingTicker(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);//画面クリア
+
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 32px misaki_gothic_2nd';
+  ctx.fillText('setting', canvas.width/2, 55);
+
+  ctx.font= '24px misaki_gothic_2nd';
+  ctx.fillText('KeyBind', canvas.width/2 -300, 120);
+  ctx.textAlign = 'left';
+  ctx.fillText(`Move up      : ${getKeyBind('moveUp')}`, 30, 180-20);
+  ctx.fillText(`Move down    : ${getKeyBind('moveDown')}`, 30, 220-20);
+  ctx.fillText(`Move right   : ${getKeyBind('moveRight')}`, 30, 260-20);
+  ctx.fillText(`Move left    : ${getKeyBind('moveLeft')}`, 30, 300-20);
+  ctx.fillText(`Shot / Enter : ${getKeyBind('shot')}`, 30, 340-20);
+  ctx.fillText(`Bomb / Cancel: ${getKeyBind('bomb')}`, 30, 380-20);
+  ctx.fillText(`Slow Move    : ${getKeyBind('slowMove')}`, 30, 420-20);
+  ctx.fillText(`Open Menu    : ${getKeyBind('showMenu')}`, 30, 460-20);
+  ctx.fillText('Select > Enter > 変更したいキー', 30, 500);
+
+  ctx.textAlign = 'center';
+  ctx.font= '24px misaki_gothic_2nd';
+  ctx.fillText('Sound', canvas.width/2 +300, 120);
+  ctx.textAlign = 'left';
+  ctx.fillText(`BGM : ${gameManager.isBgm}`, 725, 180-20);
+  ctx.fillText(`SE  : ${gameManager.isSe}`, 725, 220-20);
 }
 
 //GameOver Scene

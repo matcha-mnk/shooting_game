@@ -21,11 +21,10 @@ export const gameManager = {
   highScore: 0,
   score: 0,
   count: 0,
+  isBgm: false,
+  isSe: false,
   timer: null
 };
-
-//gameManager.bgm_title_1.loop = true;
-//gameManager.bgm_game_1.loop = true;
 
 //ゲーム内シーンの状態
 export const gameSceneState = {

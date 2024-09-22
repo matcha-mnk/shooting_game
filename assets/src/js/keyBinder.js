@@ -29,6 +29,6 @@ export function getKeyBind(action){
   }
 }
 
-function newKeyBind(action){
+function setKeyBind(action){
   //TASK:KeyBind変更
 }

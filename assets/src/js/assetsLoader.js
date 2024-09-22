@@ -1,3 +1,5 @@
+import { gameManager } from "./gameManager.js";
+
 //画像読み込み関数
 export function imageLoad(imgNames, imgType){
   return new Promise((resolve) => {
@@ -33,13 +35,15 @@ async function fetchAudio(audioUrl){
 }
 
 export async function playAudio(audioUrl){
-  const audioBuffer = await fetchAudio(audioUrl);
-  audioSource = audioCtx.createBufferSource();
-  audioSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
-  audioSource.loop = true;
+  if(gameManager.isBgm){
+    const audioBuffer = await fetchAudio(audioUrl);
+    audioSource = audioCtx.createBufferSource();
+    audioSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
+    audioSource.loop = true;
 
-  audioSource.connect(audioCtx.destination);
-  audioSource.start();
+    audioSource.connect(audioCtx.destination);
+    audioSource.start();
+  }
 }
 
 export function stopAudio(){
@@ -51,10 +55,12 @@ export function stopAudio(){
 }
 
 export async function playSE(audioUrl){
-  const audioBuffer = await fetchAudio(audioUrl);
-  seSource = audioCtx.createBufferSource();
-  seSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
+  if(gameManager.isSe){
+    const audioBuffer = await fetchAudio(audioUrl);
+    seSource = audioCtx.createBufferSource();
+    seSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
 
-  seSource.connect(audioCtx.destination);
-  seSource.start();
+    seSource.connect(audioCtx.destination);
+    seSource.start();
+  }
 }
