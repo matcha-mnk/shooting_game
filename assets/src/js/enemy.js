@@ -60,6 +60,8 @@ export function drawEnemies(){
 export function enemyCreateManager(){
   const count = gameManager.count;
 
+  const enemyWave1 = 30;
+
   if(count === 30) createEnemy1(300, 0, 0, 2, 1);
   if(count === 80) createEnemy1(330, 0, 0, 2, 2);
   if(count === 150) createEnemy1(canvas.width - 300, 0, 0, 2, 1);

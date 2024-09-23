@@ -373,8 +373,10 @@ function menuTicker(){
       ctx.fillStyle = '#dbdbdb';
       ctx.fillText('pause', canvas.width/2, 200);
 
+      ctx.fillStyle = 'aqua';
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
       ctx.fillText('ゲームに戻る', canvas.width/2, 250);
+      ctx.fillStyle = '#dbdbdb';
 
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillText('タイトルに戻る', canvas.width/2, 290);
@@ -393,8 +395,10 @@ function menuTicker(){
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillText('ゲームに戻る', canvas.width/2, 250);
 
+      ctx.fillStyle = 'aqua';
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
       ctx.fillText('タイトルに戻る', canvas.width/2, 290);
+      ctx.fillStyle = '#dbdbdb';
       break;
     case 2:
       //薄暗く
@@ -408,11 +412,13 @@ function menuTicker(){
       ctx.fillText('本当にタイトルに戻りますか?', canvas.width/2, 200);
       ctx.fillText('(スコアはセーブされません)', canvas.width/2, 230);
 
+      ctx.fillStyle = 'aqua';
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
       ctx.fillText('Yes', canvas.width/2, 280);
+      ctx.fillStyle = '#dbdbdb';
 
       ctx.font = '24px misaki_gothic_2nd';
-      ctx.fillText('No', canvas.width/2, 320);
+      ctx.fillText('Cancel', canvas.width/2, 320);
       break;
     case 3:
       //薄暗く
@@ -429,8 +435,10 @@ function menuTicker(){
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillText('Yes', canvas.width/2, 280);
 
+      ctx.fillStyle = 'aqua';
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
-      ctx.fillText('No', canvas.width/2, 320);
+      ctx.fillText('Cancel', canvas.width/2, 320);
+      ctx.fillStyle = '#dbdbdb';
       break;
   }
 }
@@ -898,14 +906,20 @@ function gameOverTicker(){
       ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
       ctx.fillRect(0,0,canvas.width,canvas.height);
 
+      //Score描画
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.textAlign = 'center';
+      ctx.fillText('Score: '+gameManager.score, canvas.width/2, 370);
+
       //GameOver描画
       ctx.font = '50px misaki_gothic_2nd';
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
-      ctx.fillText(`Game Over`, 480, 200);
+      ctx.fillText(`Game Over`, canvas.width/2, 200);
 
+      ctx.fillStyle = 'aqua';
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
       ctx.fillText('やりなおす', canvas.width/2, 250);
+      ctx.fillStyle = '#dbdbdb';
 
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillText('タイトルに戻る', canvas.width/2, 290);
@@ -915,17 +929,23 @@ function gameOverTicker(){
       ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
       ctx.fillRect(0,0,canvas.width,canvas.height);
 
+      //Score描画
+      ctx.font = 'italic bold 24px misaki_gothic_2nd';
+      ctx.fillStyle = '#dbdbdb';
+      ctx.textAlign = 'center';
+      ctx.fillText('Score: '+gameManager.score, canvas.width/2, 370);
+
       //GameOver描画
       ctx.font = '50px misaki_gothic_2nd';
-      ctx.fillStyle = 'white';
-      ctx.textAlign = 'center';
       ctx.fillText(`Game Over`, 480, 200);
 
       ctx.font = '24px misaki_gothic_2nd';
       ctx.fillText('やりなおす', canvas.width/2, 250);
 
+      ctx.fillStyle = 'aqua';
       ctx.font = 'italic bold 24px misaki_gothic_2nd';
       ctx.fillText('タイトルに戻る', canvas.width/2, 290);
+      ctx.fillStyle = '#dbdbdb';
       break;
   }
 }
