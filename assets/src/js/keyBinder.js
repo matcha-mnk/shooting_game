@@ -33,11 +33,21 @@ export function setKeyBind(action, keyCode){
   if(action in keyActions){
     if(!Object.values(keyActions).includes(keyCode)){
       //KeyBind変更
-    keyActions[action] = keyCode;
+      keyActions[action] = keyCode;
+      //保存
+      localStorage.setItem('keyBind', JSON.stringify(keyActions));
     }else{
-      console.error('既に登録されているキーです');
+      alert('既に登録されているキーです');
     }
   }else{
     console.error('不正なAction名');
+  }
+}
+
+export function loadKeyBind(){
+  if(localStorage.getItem('keyBind') != null){
+    keyActions = JSON.parse(localStorage.getItem('keyBind'));
+  }else{
+    // console.log('KeyBind変更はまだしていない');
   }
 }

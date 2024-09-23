@@ -7,7 +7,7 @@ import { drawBackground, createBackgroundStar, moveBackgroundStars, drawBackgrou
 import { drawUI } from './ui.js';
 import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
-import { getKeyBind, setKeyBind } from './keyBinder.js';
+import { getKeyBind, loadKeyBind, setKeyBind } from './keyBinder.js';
 import { playSE, playAudio, stopAudio } from './assetsLoader.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
@@ -101,9 +101,19 @@ document.addEventListener('click', () =>  {
 
 //TitleScene
 function startTitleScene(){
+  loadKeyBind();//localStorageからKeyBind Load
+
   gameSceneState.changeScene('titleScene');
   stopAudio();
   playAudio('assets/sounds/bgm-title_1.mp3');
+
+  //High Score ロード
+  if(localStorage.getItem('highScore') != null){
+    gameManager.highScore = localStorage.getItem('highScore');
+  }else{
+    // console.log('High Score は記録されていない');
+  }
+
   titleSceneTimer = setInterval(titleTicker, 30);
 }
 
@@ -123,7 +133,7 @@ function titleTicker(){
   ctx.fillText(`${getKeyBind('moveDown')}:Down `, canvas.width-5, canvas.height-25);
   ctx.fillText(`${getKeyBind('shot')}:Enter`, canvas.width-5, canvas.height-10);
 
-  //ハイスコア描画
+  //High Score描画
   ctx.textAlign = 'center';
   ctx.font = 'italic bold 24px misaki_gothic_2nd';
   ctx.fillText('High Score:'+gameManager.highScore, canvas.width/2, canvas.height-20);
@@ -832,6 +842,7 @@ function settingSceneTicker(){
 
   //Cancel 入力検知
   if(isAction.isBomb && !onCancelKey){
+
     onCancelKey = true;
     clearInterval(settingTimer);
     startTitleScene();
@@ -863,16 +874,18 @@ function gameOverTicker(){
   if(isAction.isShot && !onEnterKey){
     playSE('assets/sounds/se-enter_1.mp3');
     onEnterKey = true;
+    //High Score 保存
+    if(gameManager.score > localStorage.getItem('highScore') || localStorage.getItem('highScore') === null ){
+      localStorage.setItem('highScore', gameManager.score);
+    }
 
     switch(gameOverSelect){
       case 0:
-        //TASK:スコア保存
         //もう一度
         clearInterval(gameOverTimer);
         startGameScene();
         break;
       case 1:
-        //TASK:スコア保存
         //タイトルへ
         clearInterval(gameOverTimer);
         startTitleScene();
