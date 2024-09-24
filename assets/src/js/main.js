@@ -9,6 +9,7 @@ import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
 import { getKeyBind, loadKeyBind, setKeyBind } from './keyBinder.js';
 import { playSE, playAudio, stopAudio } from './assetsLoader.js';
+import { startStage } from './stageManager.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
 import { isAction } from './input.js';
@@ -243,8 +244,8 @@ function gameTicker(){
   }
 
   //処理
+  startStage();//ステージ管理
   shotPlayer();//PlayerShot処理
-  enemyCreateManager();//Enemy生成
   //移動
   moveBackgroundStars();//Star移動
   moveEnemyShots();//EnemyShot移動

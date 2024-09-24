@@ -45,6 +45,17 @@ export function drawUI(){
   ctx.fillStyle = '#dbdbdb';
   ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
 
+  //Character 描画
+  let charImgPath;
+  if(gameManager.count %200 === 0){
+    charImgPath = gameManager.spriteImage.char_1_normal_2;
+  }else if((gameManager.count +1) %200 === 0){
+    charImgPath = gameManager.spriteImage.char_1_normal_3;
+  }else{
+    charImgPath = gameManager.spriteImage.char_1_normal_1;
+  }
+  ctx.drawImage(charImgPath, 730, canvas.height - charImgPath.height);
+
 
   showChapter(15, 1, 'はじまり')
 }
