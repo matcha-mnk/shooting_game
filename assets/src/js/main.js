@@ -10,6 +10,7 @@ import { imageLoad } from './assetsLoader.js';
 import { getKeyBind, loadKeyBind, setKeyBind } from './keyBinder.js';
 import { playSE, playAudio, stopAudio } from './assetsLoader.js';
 import { startStage } from './stageManager.js';
+import { loadCsv } from './stageManager.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
 import { isAction } from './input.js';
@@ -39,7 +40,7 @@ let settingTimer;
 
 assetLoader();
 
-//画像ロード
+//ロード
 async function assetLoader(){
   const [spriteImage, effectImage, backgroundImage, uiImage] = await Promise.all([
     imageLoad(assetsNames.spriteNames, 'sprite-'),
@@ -51,6 +52,8 @@ async function assetLoader(){
   gameManager.effectImage = effectImage;
   gameManager.backgroundImage = backgroundImage;
   gameManager.uiImage = uiImage;
+
+  loadCsv();
 
 
   ctx.textAlign = 'center';

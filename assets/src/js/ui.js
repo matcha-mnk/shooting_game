@@ -71,13 +71,13 @@ export function drawUI(){
 
     ctx.textAlign = 'left';//一応
     //Speaker Name
-    ctx.font = 'italic 15px misaki_gothic_2nd';
+    ctx.font = 'italic bold 15px misaki_gothic_2nd';
     ctx.fillStyle = '#dbdbdb';
-    ctx.fillText(storySpeakerName, 250 + 20, canvas.height -140);
+    ctx.fillText(storySpeakerName, 250 + 20, canvas.height -130);
 
     //Text
-    ctx.font = '24px misaki_gothic_2nd';
-    ctx.fillText(storyText, 250 + 20, canvas.height/2 -100);
+    ctx.font = '15px misaki_gothic_2nd';
+    ctx.fillText(storyText, 250 + 20, canvas.height -100);
   }
 
 
@@ -116,7 +116,11 @@ function drawChapter(chapNum, title){
 
 //Story 表示処理
 export function showStory(text, charId, charName){
-  storySpeakerName = charName;
-  storySpeakerImgPath = gameManager.spriteImage[charId];
-  storyText = text;
+  if(text != ''){
+    storySpeakerName = charName;
+    storySpeakerImgPath = gameManager.spriteImage[charId];
+    storyText = text;
+  }else{
+    gameManager.isTalking = false;
+  }
 }
