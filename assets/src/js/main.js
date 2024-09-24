@@ -253,11 +253,11 @@ function gameTicker(){
   movePlayer();//Player移動
   //描画
   drawBackground();//Background描画
-  drawBackgroundStars();//Star描画
-  drawEnemyShot();//EnemyShot描画
   drawEnemies();//Enemy描画
   drawPlayerShots();//Shot描画
   drawPlayer();//Player描画
+  drawBackgroundStars();//Star描画
+  drawEnemyShot();//EnemyShot描画
   drawUI();//UI描画
 
   //当たり判定
