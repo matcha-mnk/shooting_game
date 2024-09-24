@@ -11,12 +11,14 @@ import { getKeyBind, loadKeyBind, setKeyBind } from './keyBinder.js';
 import { playSE, playAudio, stopAudio } from './assetsLoader.js';
 import { startStage } from './stageManager.js';
 import { loadCsv } from './stageManager.js';
+import { cipherTest, encrypt, decrypt } from './cipher.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
 import { isAction } from './input.js';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+
 
 let onUpKey = false;
 let onDownKey = false;
@@ -37,6 +39,8 @@ let howToPlayTimer;
 let gameOverTimer;
 let settingTimer;
 
+
+cipherTest();//暗号化のテスト
 
 assetLoader();
 

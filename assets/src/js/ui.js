@@ -26,7 +26,7 @@ export function drawUI(){
   ctx.font = '24px misaki_gothic_2nd';
   ctx.textAlign = 'right';
   ctx.fillStyle = '#dbdbdb';
-  ctx.fillText(('000000000000000000' + gameManager.score).slice(-18), canvas.width-10, 55);
+  ctx.fillText(('000000000000000' + gameManager.score).slice(-18), canvas.width-10, 55);
 
   //Level
   ctx.textAlign = 'left';

@@ -12,20 +12,20 @@ let lock;//TASK:名称変更
 //CSV 読み込み
 export function loadCsv(){
   fetch('assets/src/csv/story_text.csv')
-    .then(response => {
-      if (!response.ok) {
-        console.error('CSV読み込みエラー');
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('fetch失敗');
       }
-      return response.text();
+      return res.text();
     })
     .then(data => {
       textData = data.split('\n').map(row => {
         const[charId, name, text] = row.split(',');
         return{ CharId: charId, Name: name, Text: text};
-      })//.filter(row => row.Text);
+      })
     })
-    .catch(() => {
-      console.error('あの、、、CSV、、、どこスか。。。？');
+    .catch((error) => {
+      console.error('CSV読み込みエラー:', error);
     });
 }
 
@@ -41,7 +41,7 @@ export function startStage(){
 
   const count = gameManager.count;
 
-  //下のif(isTalking)に入れたほうが多分スマートだけど描画タイミング的に先に読み込まないといけない
+  //描画タイミング的に先に読み込む
   if(textData[storyNum].CharId === ''){
     gameManager.isTalking = false;
     storyNum++;

@@ -86,7 +86,7 @@ function sceneChangeTest(){
   );//正常
   else console.error('ERROR-sceneChangeTest');
 
-  console.log('sceneChangeTest finished');
+  console.log('sceneChangeTest was finished');
 }
 
 //Assets Name
