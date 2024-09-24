@@ -7,6 +7,10 @@ let storySpeakerName;
 let storySpeakerImgPath;
 let storyText;
 
+export function reset(){
+  storyText = 0;
+}
+
 //UI描画
 export function drawUI(){
   //Letter Box
@@ -44,10 +48,10 @@ export function drawUI(){
   ctx.fillText(`BOMB ${gameManager.bombs}`, 730, 250);
 
 
-  //Count TASK:後で消す!!!
-  ctx.font = '24px misaki_gothic_2nd';
-  ctx.fillStyle = '#dbdbdb';
-  ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
+  //Count
+  // ctx.font = '24px misaki_gothic_2nd';
+  // ctx.fillStyle = '#dbdbdb';
+  // ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
 
   //Character 描画
   let charImgPath;
@@ -116,11 +120,7 @@ function drawChapter(chapNum, title){
 
 //Story 表示処理
 export function showStory(text, charId, charName){
-  if(text != ''){
-    storySpeakerName = charName;
-    storySpeakerImgPath = gameManager.spriteImage[charId];
-    storyText = text;
-  }else{
-    gameManager.isTalking = false;
-  }
+  storySpeakerName = charName;
+  storySpeakerImgPath = gameManager.spriteImage[charId];
+  storyText = text;
 }

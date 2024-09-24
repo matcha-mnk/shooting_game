@@ -4,7 +4,14 @@ dummy_image,上司,あ、もしもし？
 char_1_normal_2,ユキ,うへぇ、残業の時だけ電話かけてくる人だァ
 dummy_image,上司,何、その不名誉なあだ名。上司を敬いなさい
 char_1_normal_3,ユキ,でもあんたより稼いでるしぃ...
-dummy_image,上司,とととにかく、討伐令が発表されたから、よろしく。
-dummy_image,,・・・ ブチッ ・・・
+dummy_image,上司,とにかく、討伐令が発表されたから、よろしく。
+dummy_image,,...ブチッ
 char_1_normal_2,ユキ,あんにゃろ、逃げたな。
-,,,
+,,
+dummy_image,???,あっどうも～
+char_1_normal_3,ユキ,うん、誰？
+dummy_image,???,誰でもよくない？
+char_1_normal_2,ユキ,よくないから聞いてるんだよ、アオイさん？
+dummy_image,???,は？なんで私の名前知って...
+char_1_normal_1,ユキ,ワレワレ ノ データベース ヲ ナメルナ
+,,

@@ -4,7 +4,7 @@ import { createPlayer, shotPlayer, movePlayer, drawPlayer } from './player.js';
 import { movePlayerShots, drawPlayerShots } from './playerShot.js';
 import { moveEnemyShots, drawEnemyShot } from './enemyShot.js';
 import { drawBackground, createBackgroundStar, moveBackgroundStars, drawBackgroundStars } from './background.js';
-import { drawUI } from './ui.js';
+import { drawUI, reset } from './ui.js';
 import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
 import { getKeyBind, loadKeyBind, setKeyBind } from './keyBinder.js';
@@ -108,6 +108,8 @@ function init(){
   titleSelect = 0;
   menuSelect = 0;
   gameOverSelect = 0;
+
+  reset();
 }
 
 //最初 クリック待ち
