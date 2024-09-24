@@ -5,7 +5,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 //Enemy1 プロパティ
-function createEnemy1(posX, posY,mX, mY, num){
+export function createEnemy1(posX, posY,mX, mY, num){
   gameManager.enemies.push({
     x: posX,
     y: posY,
@@ -54,38 +54,6 @@ export function drawEnemies(){
     ctx.drawImage(enemy.image, enemy.x - enemy.width/2, enemy.y - enemy.height/2);
   }
 }
-
-
-//Enemy生成Manager
-export function enemyCreateManager(){
-  const count = gameManager.count;
-
-  const enemyWave1 = 30;
-
-  if(count === 30) createEnemy1(300, 0, 0, 2, 1);
-  if(count === 80) createEnemy1(330, 0, 0, 2, 2);
-  if(count === 150) createEnemy1(canvas.width - 300, 0, 0, 2, 1);
-  if(count === 200) createEnemy1(canvas.width - 330, 0, 0, 2, 2);
-  if(count === 300){
-    for(let i=0; i<7; i++){
-      createEnemy1(300+25*i, 0-50*i, 0, 3, 0);
-      createEnemy1(canvas.width - 300-25*i, 0-50*i, 0, 3, 0);
-    }
-  }
-  if(count === 420) createEnemy1(canvas.width/2 + 100, 0, 0, 3, 3);
-  if(count === 440) createEnemy1(canvas.width/2 - 100, 0, 0, 3, 4);
-  if(count === 450) createEnemy1(canvas.width/2, 0, 0, 3, 3);
-  if(count === 500) createEnemy1(255, 0, 1.5, 2, 5);
-  if(count === 510) createEnemy1(canvas.width -300, 0, -1.5, 2, 6);
-  if(count === 515) createEnemy1(370, 0, 1.5, 2, 5);
-  if(count === 525) createEnemy1(canvas.width -250, 0, -1.5, 2, 6);
-  if(count === 540) createEnemy1(410, 0, 2, 2, 6);
-  if(count === 545) createEnemy1(100, 50, 3, 0, 1);
-  if(count === 555) createEnemy1(810, 70, -3, 0, 2);
-  if(count === 560) createEnemy1(100, 40, 3, 1, 1);
-  if(count === 570) createEnemy1(810, 90, -3, -1, 2);
-}
-
 
 //Enemy Shot
 function enemyShot1(enemy){

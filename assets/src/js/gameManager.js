@@ -23,6 +23,7 @@ export const gameManager = {
   count: 0,
   isBgm: false,
   isSe: false,
+  isTalking: false,
   timer: null
 };
 

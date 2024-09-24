@@ -1,5 +1,5 @@
 //関数
-import { enemyCreateManager, moveEnemies, drawEnemies } from './enemy.js';
+import { moveEnemies, drawEnemies } from './enemy.js';
 import { createPlayer, shotPlayer, movePlayer, drawPlayer } from './player.js';
 import { movePlayerShots, drawPlayerShots } from './playerShot.js';
 import { moveEnemyShots, drawEnemyShot } from './enemyShot.js';
@@ -59,8 +59,19 @@ async function assetLoader(){
   ctx.fillText('Please click', canvas.width/2, canvas.height/2-25);
   ctx.fillText('※BGM / SE がでます', canvas.width/2, canvas.height/2+25);
 
-  gameManager.isBgm = true;
-  gameManager.isSe = true;
+  //localStorageからAudioの設定 Load
+  if(localStorage.getItem('isBgm') != null){
+    gameManager.isBgm = localStorage.getItem('isBgm') === 'true';
+  }else{
+    // console.log('BGM設定はまだ変更していない');
+    gameManager.isBgm = true;
+  }
+  if(localStorage.getItem('isSe') != null){
+    gameManager.isSe = localStorage.getItem('isSe') === 'true';
+  }else{
+    // console.log('SE設定はまだ変更していない');
+    gameManager.isSe = true;
+  }
 
   gameSceneState.changeScene('loading');
 }
@@ -81,6 +92,7 @@ function init(){
   gameManager.bombs = gameManager.defaultBombs;
   gameManager.count = 0;
   gameManager.score = 0;
+  gameManager.isTalking = false;
 
   onUpKey = false;
   onDownKey = false;
@@ -828,14 +840,20 @@ function settingSceneTicker(){
     playSE('assets/sounds/se-enter_1.mp3');
 
     if(settingSelect >= 0 && settingSelect <= 7 && !isKeyBinding){
+      //KeyBind
       isKeyBinding = true;
     }
     else if(settingSelect === 8){
+      //BGM
       gameManager.isBgm = !gameManager.isBgm;
-      if(!gameManager.isBgm) stopAudio();
-      else playAudio('assets/sounds/bgm-title_1.mp3');
+      localStorage.setItem('isBgm', gameManager.isBgm);//Save
+
+      if(!gameManager.isBgm) stopAudio();//BGM止める
+      else playAudio('assets/sounds/bgm-title_1.mp3');//再開
     }else if(settingSelect === 9){
+      //SE
       gameManager.isSe = !gameManager.isSe;
+      localStorage.setItem('isSe', gameManager.isSe);//Save
     }
   }else if(!isAction.isShot){
     onEnterKey = false;

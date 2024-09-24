@@ -3,6 +3,10 @@ import { gameManager } from './gameManager.js';
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+let storySpeakerName;
+let storySpeakerImgPath;
+let storyText;
+
 //UI描画
 export function drawUI(){
   //Letter Box
@@ -56,10 +60,31 @@ export function drawUI(){
   }
   ctx.drawImage(charImgPath, 730, canvas.height - charImgPath.height);
 
+  //Story 描画
+  if(gameManager.isTalking){
+    //背景
+    ctx.fillStyle = 'rgba(' + [0,0,0,0.5] + ')';
+    ctx.fillRect(250, canvas.height -100 -50, 460, 100);
+
+    //Char 画像
+    ctx.drawImage(storySpeakerImgPath, canvas.width-250-storySpeakerImgPath.width, canvas.height -150 - storySpeakerImgPath.height);
+
+    ctx.textAlign = 'left';//一応
+    //Speaker Name
+    ctx.font = 'italic 15px misaki_gothic_2nd';
+    ctx.fillStyle = '#dbdbdb';
+    ctx.fillText(storySpeakerName, 250 + 20, canvas.height -140);
+
+    //Text
+    ctx.font = '24px misaki_gothic_2nd';
+    ctx.fillText(storyText, 250 + 20, canvas.height/2 -100);
+  }
+
 
   showChapter(15, 1, 'はじまり')
 }
 
+//Chapter 表示処理
 function showChapter(startCount, chapNum, title){
   if(gameManager.count >= startCount && gameManager.count <= startCount+86){
     //背景
@@ -75,7 +100,10 @@ function showChapter(startCount, chapNum, title){
   if(gameManager.count === startCount+80+6) drawChapter(chapNum, title);
 }
 
+//Chapter 描画
 function drawChapter(chapNum, title){
+  ctx.textAlign = 'left';//一応
+
   //Chapter
   ctx.font = 'italic 24px misaki_gothic_2nd';
   ctx.fillStyle = '#dbdbdb';
@@ -83,4 +111,12 @@ function drawChapter(chapNum, title){
   //Title
   ctx.font = 'bold 24px misaki_gothic_2nd';
   ctx.fillText(title, 250 + 20, canvas.height/2 + 20);
+}
+
+
+//Story 表示処理
+export function showStory(text, charId, charName){
+  storySpeakerName = charName;
+  storySpeakerImgPath = gameManager.spriteImage[charId];
+  storyText = text;
 }
