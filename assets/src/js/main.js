@@ -40,7 +40,7 @@ let gameOverTimer;
 let settingTimer;
 
 
-cipherTest();//暗号化のテスト
+//cipherTest();//暗号化のテスト
 
 assetLoader();
 
@@ -131,7 +131,7 @@ function startTitleScene(){
 
   //High Score ロード
   if(localStorage.getItem('highScore') != null){
-    gameManager.highScore = localStorage.getItem('highScore');
+    gameManager.highScore = decrypt(localStorage.getItem('highScore'));
   }else{
     // console.log('High Score は記録されていない');
   }
@@ -903,8 +903,8 @@ function gameOverTicker(){
     playSE('assets/sounds/se-enter_1.mp3');
     onEnterKey = true;
     //High Score 保存
-    if(gameManager.score > localStorage.getItem('highScore') || localStorage.getItem('highScore') === null ){
-      localStorage.setItem('highScore', gameManager.score);
+    if(localStorage.getItem('highScore') === null ? true : gameManager.score > decrypt(localStorage.getItem('highScore')) ){
+      localStorage.setItem('highScore', encrypt(gameManager.score));
     }
 
     switch(gameOverSelect){
