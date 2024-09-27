@@ -35,8 +35,8 @@ export function shotPlayer(){
       const intervalShot2 = 5;
       if((count -gameManager.oldCountShot2) > intervalShot2){
         gameManager.oldCountShot2 = count;
-        createPlayerShot2(gameManager.player.x +10, gameManager.player.y - 5, 20);
-        createPlayerShot2(gameManager.player.x -10, gameManager.player.y - 5, 20);
+        createPlayerShot2(gameManager.player.x +30, gameManager.player.y - 5, 20);
+        createPlayerShot2(gameManager.player.x -30, gameManager.player.y - 5, 20);
         playSE('assets/sound/se-shot_1.mp3');
       }
     }

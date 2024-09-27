@@ -30,6 +30,7 @@ export function createPlayerShot2(posX, posY, speed){
     speed: speed,
     moveX: 0,
     moveY: 0,
+    targetEnemy: null,
     image: gameManager.effectImage.player_shot_2,
     isDied: false
   })
@@ -39,23 +40,38 @@ export function createPlayerShot2(posX, posY, speed){
 export function movePlayerShots(){
   for(const shot of gameManager.playerShots){
     if(shot.id === 2){
-      let distanceX = 1000;
-      let distanceY = 1000;
       let targetX;
       let targetY;
-      //一番近い敵の座標取得
-      for(const enemy of gameManager.enemies){
-        if(Math.abs(enemy.x - shot.x) < distanceX){
-          targetX = enemy.x;
-          distanceX = Math.abs(enemy.x -shot.x);
+      let targetEnemy = null;
+      let minDistance = Infinity;
+
+      if(gameManager.enemies[0]){
+        console.log('y');
+        //一番近い敵の座標取得
+        for(const enemy of gameManager.enemies){
+          const dx = enemy.x - shot.x;
+          const dy = enemy.y - shot.y;
+          const distance = dx*dx - dy*dy;
+          if(distance < minDistance){
+            minDistance = distance;
+            targetEnemy = enemy;
+          }
+
+          if(targetEnemy != null){
+            targetX = targetEnemy.x;
+            targetY = targetEnemy.y;
+          }else{
+            targetX = shot.x;
+            targetY = shot.y - 100;
+          }
         }
-        if(Math.abs(enemy.y - shot.y) < distanceY){
-          targetY = enemy.y;
-          distanceY = Math.abs(enemy.y -shot.y);
-        }
+      }else{
+        console.log('n');
+        targetX = shot.x;
+        targetY = shot.y - 100;
       }
       //角度計算
-      const rad = (Math.atan2(targetY - shot.y, targetX - shot.x)-90) * (Math.PI / 180);
+      const rad = (Math.atan2(targetY - shot.y, targetX - shot.x));
       //移動量代入
       shot.moveX = Math.cos(rad) * shot.speed;
       shot.moveY = Math.sin(rad) * shot.speed;
