@@ -42,11 +42,9 @@ export function movePlayerShots(){
     if(shot.id === 2){
       let targetX;
       let targetY;
-      let targetEnemy = null;
       let minDistance = Infinity;
 
-      if(gameManager.enemies[0]){
-        console.log('y');
+      if(gameManager.enemies[0] && !shot.targetEnemy){
         //一番近い敵の座標取得
         for(const enemy of gameManager.enemies){
           const dx = enemy.x - shot.x;
@@ -54,22 +52,23 @@ export function movePlayerShots(){
           const distance = dx*dx - dy*dy;
           if(distance < minDistance){
             minDistance = distance;
-            targetEnemy = enemy;
+            shot.targetEnemy = enemy;
           }
 
-          if(targetEnemy != null){
-            targetX = targetEnemy.x;
-            targetY = targetEnemy.y;
-          }else{
-            targetX = shot.x;
-            targetY = shot.y - 100;
-          }
+          targetX = shot.targetEnemy.x;
+          targetY = shot.targetEnemy.y;
+        }
+      }else if(shot.targetEnemy){
+        targetX = shot.targetEnemy.x;
+        targetY = shot.targetEnemy.y;
+        if(shot.targetEnemy.isDied){
+          shot.isDied = true;
         }
       }else{
-        console.log('n');
         targetX = shot.x;
         targetY = shot.y - 100;
       }
+
       //角度計算
       const rad = (Math.atan2(targetY - shot.y, targetX - shot.x));
       //移動量代入
