@@ -5,17 +5,37 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 //Enemy1 プロパティ
-export function createEnemy1(posX, posY,mX, mY, num){
+export function createEnemy1(posX, posY, mX, mY, num, hitPoint){
   gameManager.enemies.push({
     x: posX,
     y: posY,
     id: num,
+    hp: hitPoint,
     width: gameManager.spriteImage.enemy_1.width,
     height: gameManager.spriteImage.enemy_1.height,
     moveX: mX,
     moveY: mY,
     image: gameManager.spriteImage.enemy_1,
     scorePoint: 5,
+    isDied: false
+  });
+}
+
+export function createEnemy2(posX, posY, targetX, targetY, num, hitPoint, speed){
+  const rad = (Math.atan2(targetY - posY, targetX - posX)+90) * (Math.PI / 180);
+  gameManager.enemies.push({
+    x: posX,
+    y: posY,
+    tx: targetX,
+    ty: targetY,
+    id: num,
+    hp: hitPoint,
+    width: gameManager.spriteImage.enemy_2.width,
+    height: gameManager.spriteImage.enemy_2.height,
+    moveX: Math.cos(rad) * speed,
+    moveY: Math.sin(rad) * speed,
+    image: gameManager.spriteImage.enemy_2,
+    scorePoint: 50,
     isDied: false
   });
 }
@@ -41,6 +61,10 @@ export function moveEnemies(){
     if(enemy.id === 4 && gameManager.count === 530){
       enemy.moveY = 1;
       enemy.moveX = -2;
+    }
+    if(enemy.id === 7 && (enemy.x >= enemy.tx+3 || enemy.x <= enemy.tx-3) && (enemy.y >= enemy.ty+3 || enemy.y <= enemy.ty-3)){
+      enemy.moveX = 0;
+      enemy.moveY = 0;
     }
   }
   gameManager.enemies = gameManager.enemies.filter(enemy =>

@@ -49,9 +49,9 @@ export function drawUI(){
 
 
   //Count
-  // ctx.font = '24px misaki_gothic_2nd';
-  // ctx.fillStyle = '#dbdbdb';
-  // ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
+  ctx.font = '24px misaki_gothic_2nd';
+  ctx.fillStyle = '#dbdbdb';
+  ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
 
   //Character 描画
   let charImgPath;
