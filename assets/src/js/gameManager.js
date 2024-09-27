@@ -14,7 +14,8 @@ export const gameManager = {
   defaultLife: 10,
   isHitPlayerEffect: false,
   oldCountHit: 0,
-  oldCountShot: 0,
+  oldCountShot1: 0,
+  oldCountShot2: 0,
   onBombKey: false,
   bombs: 0,
   defaultBombs: 3,
@@ -92,7 +93,7 @@ function sceneChangeTest(){
 //Assets Name
 export const assetsNames ={
   spriteNames: ['player_1', 'player_1_hit', 'enemy_1', 'enemy_2', 'char_1_normal_1', 'char_1_normal_2', 'char_1_normal_3', 'char_2', 'dummy_image'],
-  effectNames: ['player_shot_1', 'enemy_shot_1'],
+  effectNames: ['player_shot_1', 'player_shot_2', 'enemy_shot_1'],
   backgroundNames: ['space_1'],
   uiNames: ['letter_box'],
   seNames: ['kill_1'],

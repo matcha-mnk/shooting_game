@@ -94,7 +94,8 @@ function init(){
   gameManager.life = gameManager.defaultLife;
   gameManager.isHitPlayerEffect = false;
   gameManager.oldCountHit = 0;
-  gameManager.oldCountShot = 0;
+  gameManager.oldCountShot1 = 0;
+  gameManager.oldCountShot2 = 0;
   gameManager.onBombKey = false;
   gameManager.bombs = gameManager.defaultBombs;
   gameManager.count = 0;

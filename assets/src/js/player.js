@@ -1,6 +1,6 @@
 import { gameManager } from './gameManager.js';
 import { isAction } from './input.js';
-import { createPlayerShot1 } from './playerShot.js';
+import { createPlayerShot1, createPlayerShot2 } from './playerShot.js';
 import { playSE } from './assetsLoader.js';
 
 const canvas = document.getElementById('canvas');
@@ -23,13 +23,22 @@ export function createPlayer(){
 //Player Shot
 export function shotPlayer(){
   if(isAction.isShot && !gameManager.isTalking){
-    const interval = 3;
+    const intervalShot1 = 3;
     const count = gameManager.count;
-    if((count - gameManager.oldCountShot) > interval){
-      gameManager.oldCountShot = count;
-      createPlayerShot1(gameManager.player.x, gameManager.player.y - 5)//弾発射
+    if((count - gameManager.oldCountShot1) > intervalShot1){
+      gameManager.oldCountShot1 = count;
+      createPlayerShot1(gameManager.player.x, gameManager.player.y - 5);//弾発射
       playSE('assets/sounds/se-shot_1.mp3');
       //console.log('SHOT!');
+    }
+    if(gameManager.playerLevel <= 1){
+      const intervalShot2 = 5;
+      if((count -gameManager.oldCountShot2) > intervalShot2){
+        gameManager.oldCountShot2 = count;
+        createPlayerShot2(gameManager.player.x +10, gameManager.player.y - 5, 20);
+        createPlayerShot2(gameManager.player.x -10, gameManager.player.y - 5, 20);
+        playSE('assets/sound/se-shot_1.mp3');
+      }
     }
   }
 
