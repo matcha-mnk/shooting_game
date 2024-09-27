@@ -7,7 +7,7 @@ let storySpeakerName;
 let storySpeakerImgPath;
 let storyText;
 
-export function reset(){
+export function resetUI(){
   storyText = 0;
 }
 

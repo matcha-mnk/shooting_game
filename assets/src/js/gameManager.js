@@ -91,7 +91,7 @@ function sceneChangeTest(){
 
 //Assets Name
 export const assetsNames ={
-  spriteNames: ['player_1', 'player_1_hit', 'enemy_1', 'char_1_normal_1', 'char_1_normal_2', 'char_1_normal_3', 'dummy_image'],
+  spriteNames: ['player_1', 'player_1_hit', 'enemy_1', 'enemy_2', 'char_1_normal_1', 'char_1_normal_2', 'char_1_normal_3', 'char_2', 'dummy_image'],
   effectNames: ['player_shot_1', 'enemy_shot_1'],
   backgroundNames: ['space_1'],
   uiNames: ['letter_box'],

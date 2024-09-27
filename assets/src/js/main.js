@@ -4,13 +4,13 @@ import { createPlayer, shotPlayer, movePlayer, drawPlayer } from './player.js';
 import { movePlayerShots, drawPlayerShots } from './playerShot.js';
 import { moveEnemyShots, drawEnemyShot } from './enemyShot.js';
 import { drawBackground, createBackgroundStar, moveBackgroundStars, drawBackgroundStars } from './background.js';
-import { drawUI, reset } from './ui.js';
+import { drawUI, resetUI } from './ui.js';
 import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
 import { getKeyBind, loadKeyBind, setKeyBind } from './keyBinder.js';
 import { playSE, playAudio, stopAudio } from './assetsLoader.js';
 import { startStage } from './stageManager.js';
-import { loadCsv } from './stageManager.js';
+import { loadCsv, resetStageManager } from './stageManager.js';
 import { cipherTest, encrypt, decrypt } from './cipher.js';
 //変数
 import { gameManager, gameSceneState, assetsNames } from './gameManager.js';
@@ -113,7 +113,8 @@ function init(){
   menuSelect = 0;
   gameOverSelect = 0;
 
-  reset();
+  resetStageManager();
+  resetUI();
 }
 
 //最初 クリック待ち

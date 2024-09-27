@@ -9,6 +9,11 @@ let textData = [];
 let endStoryCount;
 let lock;//TASK:名称変更
 
+const countEnemyWaveArray = [30, 50];
+const storyNumArray = [0, 7];
+const countStoryArray = [780, 330];
+let storyWave = 0;
+
 //CSV 読み込み
 export function loadCsv(){
   fetch('assets/src/csv/story_text.csv')
@@ -29,6 +34,10 @@ export function loadCsv(){
     });
 }
 
+export function resetStageManager(){
+  storyNum = 0;
+  storyWave = 0;
+}
 
 export function startStage(){
   //Enter 入力検知
@@ -45,6 +54,7 @@ export function startStage(){
   if(textData[storyNum].CharId === ''){
     gameManager.isTalking = false;
     storyNum++;
+    storyWave++;
   }else if(textData[storyNum].CharId === 'end'){
     //TASK:ゲームクリア処理
   }else{
@@ -59,9 +69,15 @@ export function startStage(){
     lock = true;
   }
 
+  //Story
+  if(storyNum === storyNumArray[storyWave] && count === endStoryCount + countEnemyWaveArray[storyWave] + countStoryArray[storyWave]){
+    gameManager.isTalking = true;
+    if(isAction.isShot)isAction.isShot = false;//脳筋だけどまあ一旦動く TASK:リファクタ
+  }
+
 
   //Wave 1
-  const countEnemyWave1 = 30;
+  const countEnemyWave1 = countEnemyWaveArray[0];
   if(count === countEnemyWave1) createEnemy1(300, 0, 0, 2, 1);
   if(count === countEnemyWave1 + 50) createEnemy1(330, 0, 0, 2, 2);
   if(count === countEnemyWave1 + 120) createEnemy1(canvas.width - 300, 0, 0, 2, 1);
@@ -85,16 +101,9 @@ export function startStage(){
   if(count === countEnemyWave1 + 530) createEnemy1(100, 40, 3, 1, 1);
   if(count === countEnemyWave1 + 540) createEnemy1(810, 90, -3, -1, 2);
 
-  //Story 1
-  const countStory1 = 780;
-  if(count === countEnemyWave1 + countStory1){
-    gameManager.isTalking = true;
-    if(isAction.isShot)isAction.isShot = false;//脳筋だけどまあ一旦動く TASK:リファクタ
-  }
-
   //Wave 2
-  const countEnemyWave2 = 50;
-  if(storyNum === 10){
+  const countEnemyWave2 = countEnemyWaveArray[1];
+  if(storyNum === 7){
     if(count === endStoryCount + countEnemyWave2)createEnemy1(canvas.width/2 - 100, 0, 1, 3, 1);
     if(count === endStoryCount + countEnemyWave2 +10)createEnemy1(canvas.width/2 + 100, 0, -1, 3, 2);
     if(count === endStoryCount + countEnemyWave2 +15)createEnemy1(canvas.width/2 - 200, 0, 1, 3, 1);
@@ -117,10 +126,11 @@ export function startStage(){
     if(count === endStoryCount + countEnemyWave2 +135)createEnemy1(canvas.width/2 + 200, 0, -1, 3, 2);
   }
 
-  //Story 2
-  const countStory2 = 330;
-  if(storyNum === 10 && count === endStoryCount + countEnemyWave2 + countStory2){
-    gameManager.isTalking = true;
-    if(isAction.isShot)isAction.isShot = false;
+
+
+  //Boss 1
+  const countBoss1 = 100;
+  if(storyNum === 14){
+    if(count === endStoryCount + countBoss1) createEnemy1;
   }
 }
