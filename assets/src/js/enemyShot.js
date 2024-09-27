@@ -5,14 +5,15 @@ const ctx = canvas.getContext('2d');
 
 
 //プロパティ
-export function createEnemyShot1(posX, posY, mX, mY){
+export function createEnemyShot1(posX, posY, degree, speed){
+  const rad = degree * (Math.PI / 180);
   gameManager.enemyShots.push({
     x: posX,
     y: posY,
     width: gameManager.effectImage.enemy_shot_1.width,
     height: gameManager.effectImage.enemy_shot_1.height,
-    moveX: mX,
-    moveY: mY,
+    moveX: Math.cos(rad) * speed,
+    moveY: Math.sin(rad) * speed,
     image: gameManager.effectImage.enemy_shot_1,
     isDied: false
   })

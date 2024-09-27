@@ -57,10 +57,7 @@ export function drawEnemies(){
 
 //Enemy Shot
 function enemyShot1(enemy){
-  for(let i=0;i<3;i++){
-    createEnemyShot1(enemy.x,enemy.y, -3 + i*i *0.5, 3 + i);
-  }
-  for(let i=0;i<3;i++){
-    createEnemyShot1(enemy.x,enemy.y, 3 + -i*i *0.5, 3 + i);
+  for(let i=0; i<5; i++){
+    createEnemyShot1(enemy.x,enemy.y, 150 - i*30, 4);
   }
 }
