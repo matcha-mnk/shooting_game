@@ -26,12 +26,15 @@ export function imageLoad(imgNames, imgType){
 
 const audioCtx = new AudioContext();
 let audioSource;
-let seSource;
 
 async function fetchAudio(audioUrl){
-  const response = await fetch(audioUrl);
-  const arrayBuffer = await response.arrayBuffer();
-  return arrayBuffer;
+  try{
+    const response = await fetch(audioUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    return arrayBuffer;
+  }catch{
+    return;
+  }
 }
 
 export async function playAudio(audioUrl){
@@ -39,8 +42,8 @@ export async function playAudio(audioUrl){
     const audioBuffer = await fetchAudio(audioUrl);
     audioSource = audioCtx.createBufferSource();
     audioSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
-    audioSource.loop = true;
 
+    audioSource.loop = true;
     audioSource.connect(audioCtx.destination);
     audioSource.start();
   }
@@ -54,13 +57,26 @@ export function stopAudio(){
   }
 }
 
-export async function playSE(audioUrl){
-  if(gameManager.isSe){
+async function pSE(audioUrl) {
+  if (gameManager.isSe) {
     const audioBuffer = await fetchAudio(audioUrl);
-    seSource = audioCtx.createBufferSource();
-    seSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
+    const newSeSource = audioCtx.createBufferSource();
+    newSeSource.buffer = await audioCtx.decodeAudioData(audioBuffer);
 
-    seSource.connect(audioCtx.destination);
-    seSource.start();
+    newSeSource.connect(audioCtx.destination);
+    newSeSource.start();
   }
 }
+
+export function playSE(audioUrl){
+  if(!playingSes.includes(audioUrl)) playingSes.push(audioUrl);
+}
+
+export function seManager(){
+  for(const seUrl of playingSes){
+    pSE(seUrl);
+  }
+  playingSes = [];
+}
+
+let playingSes = [];

@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 
 
 //Shotプロパティ
-export function createPlayerShot1(posX, posY){
+export function createPlayerShot1(posX, posY, power){
   // console.log('shot');
   gameManager.playerShots.push({
     id: 1,
@@ -16,11 +16,12 @@ export function createPlayerShot1(posX, posY){
     moveX: 0,
     moveY: -20,
     image: gameManager.effectImage.player_shot_1,
+    power: power,
     isDied: false
   })
 }
 
-export function createPlayerShot2(posX, posY, speed){
+export function createPlayerShot2(posX, posY, speed, power){
   gameManager.playerShots.push({
     id: 2,
     x: posX,
@@ -32,6 +33,7 @@ export function createPlayerShot2(posX, posY, speed){
     moveY: 0,
     targetEnemy: null,
     image: gameManager.effectImage.player_shot_2,
+    power: power,
     isDied: false
   })
 }
@@ -61,8 +63,8 @@ export function movePlayerShots(){
       }else if(shot.targetEnemy){
         targetX = shot.targetEnemy.x;
         targetY = shot.targetEnemy.y;
-        if(shot.targetEnemy.isDied){
-          shot.isDied = true;
+        if(shot.targetEnemy.isDied || shot.targetEnemy == undefined){
+          shot.targetEnemy = null;
         }
       }else{
         targetX = shot.x;

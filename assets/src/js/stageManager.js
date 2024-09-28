@@ -78,52 +78,52 @@ export function startStage(){
 
   //Wave 1
   const countEnemyWave1 = countEnemyWaveArray[0];
-  if(count === countEnemyWave1) createEnemy1(300, 0, 0, 2, 1, 1);
-  if(count === countEnemyWave1 + 50) createEnemy1(330, 0, 0, 2, 2, 1);
-  if(count === countEnemyWave1 + 120) createEnemy1(canvas.width - 300, 0, 0, 2, 1, 1);
-  if(count === countEnemyWave1 + 170) createEnemy1(canvas.width - 330, 0, 0, 2, 2, 1);
+  if(count === countEnemyWave1) createEnemy1(300, 0, 0, 2, 1, 50);
+  if(count === countEnemyWave1 + 50) createEnemy1(330, 0, 0, 2, 2, 50);
+  if(count === countEnemyWave1 + 120) createEnemy1(canvas.width - 300, 0, 0, 2, 1, 50);
+  if(count === countEnemyWave1 + 170) createEnemy1(canvas.width - 330, 0, 0, 2, 2, 50);
   if(count === countEnemyWave1 + 270){
     for(let i=0; i<7; i++){
-      createEnemy1(300+25*i, 0-50*i, 0, 3, 0);
-      createEnemy1(canvas.width - 300-25*i, 0-50*i, 0, 3, 0);
+      createEnemy1(300+25*i, 0-50*i, 0, 3, 0, 50);
+      createEnemy1(canvas.width - 300-25*i, 0-50*i, 0, 3, 0, 50);
     }
   }
-  if(count === countEnemyWave1 + 390) createEnemy1(canvas.width/2 + 100, 0, 0, 3, 3, 1);
-  if(count === countEnemyWave1 + 410) createEnemy1(canvas.width/2 - 100, 0, 0, 3, 4, 1);
-  if(count === countEnemyWave1 + 420) createEnemy1(canvas.width/2, 0, 0, 3, 3, 1);
-  if(count === countEnemyWave1 + 470) createEnemy1(255, 0, 1.5, 2, 5, 1);
-  if(count === countEnemyWave1 + 480) createEnemy1(canvas.width -300, 0, -1.5, 2, 6, 1);
-  if(count === countEnemyWave1 + 485) createEnemy1(370, 0, 1.5, 2, 5, 1);
-  if(count === countEnemyWave1 + 495) createEnemy1(canvas.width -250, 0, -1.5, 2, 6, 1);
-  if(count === countEnemyWave1 + 510) createEnemy1(410, 0, 2, 2, 6), 1;
-  if(count === countEnemyWave1 + 515) createEnemy1(100, 50, 3, 0, 1, 1);
-  if(count === countEnemyWave1 + 525) createEnemy1(810, 70, -3, 0, 2, 1);
-  if(count === countEnemyWave1 + 530) createEnemy1(100, 40, 3, 1, 1, 1);
-  if(count === countEnemyWave1 + 540) createEnemy1(810, 90, -3, -1, 2, 1);
+  if(count === countEnemyWave1 + 390) createEnemy1(canvas.width/2 + 100, 0, 0, 3, 3, 50);
+  if(count === countEnemyWave1 + 410) createEnemy1(canvas.width/2 - 100, 0, 0, 3, 4, 50);
+  if(count === countEnemyWave1 + 420) createEnemy1(canvas.width/2, 0, 0, 3, 3, 50);
+  if(count === countEnemyWave1 + 470) createEnemy1(255, 0, 1.5, 2, 5, 50);
+  if(count === countEnemyWave1 + 480) createEnemy1(canvas.width -300, 0, -1.5, 2, 6, 50);
+  if(count === countEnemyWave1 + 485) createEnemy1(370, 0, 1.5, 2, 5, 50);
+  if(count === countEnemyWave1 + 495) createEnemy1(canvas.width -250, 0, -1.5, 2, 6, 50);
+  if(count === countEnemyWave1 + 510) createEnemy1(410, 0, 2, 2, 6, 50);
+  if(count === countEnemyWave1 + 515) createEnemy1(100, 50, 3, 0, 1, 50);
+  if(count === countEnemyWave1 + 525) createEnemy1(810, 70, -3, 0, 2, 50);
+  if(count === countEnemyWave1 + 530) createEnemy1(100, 40, 3, 1, 1, 50);
+  if(count === countEnemyWave1 + 540) createEnemy1(810, 90, -3, -1, 2, 50);
 
   //Wave 2
   const countEnemyWave2 = countEnemyWaveArray[1];
   if(storyNum === 7){
-    if(count === endStoryCount + countEnemyWave2)createEnemy1(canvas.width/2 - 100, 0, 1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +10)createEnemy1(canvas.width/2 + 100, 0, -1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +15)createEnemy1(canvas.width/2 - 200, 0, 1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +20)createEnemy1(canvas.width/2 + 150, 0, -1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +30)createEnemy1(canvas.width/2 - 180, 0, 1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +35)createEnemy1(canvas.width/2 + 110, 0, -1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +40)createEnemy1(canvas.width/2 + 250, 0, -1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +50)createEnemy1(canvas.width/2 + 50, 0, -1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +60)createEnemy1(canvas.width/2 - 120, 0, 1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +65)createEnemy1(canvas.width/2 + 200, 0, -1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +70)createEnemy1(canvas.width/2 - 100, 0, 1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +75)createEnemy1(canvas.width/2 + 100, 0, -1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +85)createEnemy1(canvas.width/2 - 200, 0, 1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +90)createEnemy1(canvas.width/2 + 150, 0, -1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +100)createEnemy1(canvas.width/2 - 180, 0, 1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +105)createEnemy1(canvas.width/2 + 110, 0, -1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +115)createEnemy1(canvas.width/2 + 250, 0, -1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +125)createEnemy1(canvas.width/2 + 50, 0, -1, 3, 2, 1);
-    if(count === endStoryCount + countEnemyWave2 +130)createEnemy1(canvas.width/2 - 120, 0, 1, 3, 1, 1);
-    if(count === endStoryCount + countEnemyWave2 +135)createEnemy1(canvas.width/2 + 200, 0, -1, 3, 2, 1);
+    if(count === endStoryCount + countEnemyWave2)createEnemy1(canvas.width/2 - 100, 0, 1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +10)createEnemy1(canvas.width/2 + 100, 0, -1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +15)createEnemy1(canvas.width/2 - 200, 0, 1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +20)createEnemy1(canvas.width/2 + 150, 0, -1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +30)createEnemy1(canvas.width/2 - 180, 0, 1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +35)createEnemy1(canvas.width/2 + 110, 0, -1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +40)createEnemy1(canvas.width/2 + 250, 0, -1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +50)createEnemy1(canvas.width/2 + 50, 0, -1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +60)createEnemy1(canvas.width/2 - 120, 0, 1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +65)createEnemy1(canvas.width/2 + 200, 0, -1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +70)createEnemy1(canvas.width/2 - 100, 0, 1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +75)createEnemy1(canvas.width/2 + 100, 0, -1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +85)createEnemy1(canvas.width/2 - 200, 0, 1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +90)createEnemy1(canvas.width/2 + 150, 0, -1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +100)createEnemy1(canvas.width/2 - 180, 0, 1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +105)createEnemy1(canvas.width/2 + 110, 0, -1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +115)createEnemy1(canvas.width/2 + 250, 0, -1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +125)createEnemy1(canvas.width/2 + 50, 0, -1, 3, 2, 50);
+    if(count === endStoryCount + countEnemyWave2 +130)createEnemy1(canvas.width/2 - 120, 0, 1, 3, 1, 50);
+    if(count === endStoryCount + countEnemyWave2 +135)createEnemy1(canvas.width/2 + 200, 0, -1, 3, 2, 50);
   }
 
   //Boss 1
@@ -137,7 +137,7 @@ export function startStage(){
       targetX = canvas.width/2;
       targetY = 100;
       speed = 3;
-      createEnemy2(canvas.width/2,0, targetX, targetY, 7, 50, speed);
+      createEnemy2(canvas.width/2,0, targetX, targetY, 7, 250, speed);
     }
 
     switch(count){

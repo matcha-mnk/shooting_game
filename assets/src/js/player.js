@@ -27,17 +27,17 @@ export function shotPlayer(){
     const count = gameManager.count;
     if((count - gameManager.oldCountShot1) > intervalShot1){
       gameManager.oldCountShot1 = count;
-      createPlayerShot1(gameManager.player.x, gameManager.player.y - 5);//弾発射
+      createPlayerShot1(gameManager.player.x, gameManager.player.y - 5, 50);//弾発射
       playSE('assets/sounds/se-shot_1.mp3');
       //console.log('SHOT!');
     }
-    if(gameManager.playerLevel <= 1){
-      const intervalShot2 = 5;
+    if(gameManager.playerLevel >= 1){
+      const intervalShot2 = 10;
       if((count -gameManager.oldCountShot2) > intervalShot2){
         gameManager.oldCountShot2 = count;
-        createPlayerShot2(gameManager.player.x +30, gameManager.player.y - 5, 20);
-        createPlayerShot2(gameManager.player.x -30, gameManager.player.y - 5, 20);
-        playSE('assets/sound/se-shot_1.mp3');
+        createPlayerShot2(gameManager.player.x +30, gameManager.player.y - 5, 20, 20);
+        createPlayerShot2(gameManager.player.x -30, gameManager.player.y - 5, 20, 20);
+        playSE('assets/sounds/se-shot_1.mp3');
       }
     }
   }

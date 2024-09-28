@@ -7,6 +7,7 @@ const ctx = canvas.getContext('2d');
 //Enemy1 プロパティ
 export function createEnemy1(posX, posY, mX, mY, num, hitPoint){
   gameManager.enemies.push({
+    createCount: gameManager.count,
     x: posX,
     y: posY,
     id: num,
@@ -24,6 +25,7 @@ export function createEnemy1(posX, posY, mX, mY, num, hitPoint){
 export function createEnemy2(posX, posY, targetX, targetY, num, hitPoint, speed){
   const rad = (Math.atan2(targetY - posY, targetX - posX)+90) * (Math.PI / 180);
   gameManager.enemies.push({
+    createCount: gameManager.count,
     x: posX,
     y: posY,
     tx: targetX,
@@ -52,9 +54,9 @@ export function moveEnemies(){
       enemy.y += enemy.moveY;
     }
 
-    if((enemy.id === 1 || enemy.id === 5) && gameManager.count % 100 === 0) enemyShot1(enemy);
-    if((enemy.id === 2 || enemy.id === 6) && (gameManager.count+50) % 100 === 0) enemyShot1(enemy);
-    if((enemy.id === 3 || enemy.id === 4) && gameManager.count % 50 === 0) enemyShot1(enemy);
+    if((enemy.id === 1 || enemy.id === 5) && (gameManager.count + enemy.createCount) % 100 === 0) enemyShot1(enemy);
+    if((enemy.id === 2 || enemy.id === 6) && (gameManager.count + enemy.createCount+50) % 100 === 0) enemyShot1(enemy);
+    if((enemy.id === 3 || enemy.id === 4) && (gameManager.count + enemy.createCount) % 50 === 0) enemyShot1(enemy);
     if(enemy.id === 3 && gameManager.count === 500) enemy.moveY = 0;
     if(enemy.id === 3 && gameManager.count === 520) enemy.moveY = -3;
     if(enemy.id === 4 && gameManager.count === 510) enemy.moveY = 0;

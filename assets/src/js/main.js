@@ -8,7 +8,7 @@ import { drawUI, resetUI } from './ui.js';
 import { hitCheckPlayer, hitCheckPlayerShot } from './hitCheck.js';
 import { imageLoad } from './assetsLoader.js';
 import { getKeyBind, loadKeyBind, setKeyBind } from './keyBinder.js';
-import { playSE, playAudio, stopAudio } from './assetsLoader.js';
+import { playSE, playAudio, stopAudio, seManager } from './assetsLoader.js';
 import { startStage } from './stageManager.js';
 import { loadCsv, resetStageManager } from './stageManager.js';
 import { cipherTest, encrypt, decrypt } from './cipher.js';
@@ -240,6 +240,8 @@ function titleTicker(){
   }else if(!isAction.isShot){
     onEnterKey = false;
   }
+
+  seManager();
 }
 
 //GameScene
@@ -301,6 +303,8 @@ function gameTicker(){
   if(gameSceneState.gameOverScene === true){
     startGameOverScene();
   }
+
+  seManager();
 
   //カウンタ更新
   gameManager.count++;
@@ -475,6 +479,8 @@ function menuTicker(){
       ctx.fillStyle = '#dbdbdb';
       break;
   }
+
+  seManager();
 }
 
 //HowToPlay Scene
@@ -517,6 +523,8 @@ function howToPlayTicker(){
   }else if(!isAction.isBomb){
     onCancelKey = false;
   }
+
+  seManager();
 }
 
 //Setting Scene
@@ -879,6 +887,8 @@ function settingSceneTicker(){
   }else if(!isAction.isBomb){
     onCancelKey = false;
   }
+
+  seManager();
 }
 
 //GameOver Scene
@@ -991,4 +1001,6 @@ function gameOverTicker(){
       ctx.fillStyle = '#dbdbdb';
       break;
   }
+
+  seManager();
 }
