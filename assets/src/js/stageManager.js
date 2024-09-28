@@ -2,6 +2,7 @@ import { gameManager } from './gameManager.js';
 import { createEnemy1, createEnemy2 } from "./enemy.js";
 import { showStory } from './ui.js';
 import { isAction } from './input.js';
+import { playAudio, stopAudio } from './assetsLoader.js';
 
 let onEnterKey = false;
 let storyNum = 0;
@@ -76,6 +77,11 @@ export function startStage(){
   }
 
 
+  if(count === 0) {
+    stopAudio();
+    playAudio('assets/sounds/bgm-game_1.mp3');
+  }
+
   //Wave 1
   const countEnemyWave1 = countEnemyWaveArray[0];
   if(count === countEnemyWave1) createEnemy1(300, 0, 0, 2, 1, 50);
@@ -126,6 +132,8 @@ export function startStage(){
     if(count === endStoryCount + countEnemyWave2 +135)createEnemy1(canvas.width/2 + 200, 0, -1, 3, 2, 50);
   }
 
+  if(storyNum === 8)stopAudio();
+
   //Boss 1
   const countBoss1 = 10;
   if(storyNum === 14){
@@ -137,23 +145,16 @@ export function startStage(){
       targetX = canvas.width/2;
       targetY = 100;
       speed = 3;
-      createEnemy2(canvas.width/2,0, targetX, targetY, 7, 250, speed);
+      createEnemy2(canvas.width/2,0, targetX, targetY, 7, 20000, speed, 'boss');
+
+      stopAudio();
+      playAudio('assets/sounds/bgm-game_2.mp3');
     }
 
     switch(count){
       case endStoryCount + countBoss1 + 50:
         //
         break;
-    }
-  }
-}
-
-function changeEnemyProperty(targetX, targetY, speed){
-  for(const enemy of gameManager.enemies){
-    if(enemy.id === 7){
-      const rad = (Math.atan2(targetY - enemy.y,targetX - enemy.x)+90) * (Math.PI / 180);
-      enemy.moveX = Math.cos(rad) * speed;
-      enemy.moveY = Math.sin(rad) * speed;
     }
   }
 }

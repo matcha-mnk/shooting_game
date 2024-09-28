@@ -223,8 +223,6 @@ function titleTicker(){
 
     switch(titleSelect){
       case 0:
-        stopAudio();
-        playAudio('assets/sounds/bgm-game_1.mp3');
         //GameSceneへ
         startGameScene();
         break;

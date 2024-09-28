@@ -23,7 +23,15 @@ export function createPlayer(){
 //Player Shot
 export function shotPlayer(){
   if(isAction.isShot && !gameManager.isTalking){
-    const intervalShot1 = 3;
+    let intervalShot1;
+    switch(gameManager.playerLevel){
+      case 0:
+        intervalShot1 = 5;
+        break;
+      case 1:
+        intervalShot1 = 3;
+        break;
+    }
     const count = gameManager.count;
     if((count - gameManager.oldCountShot1) > intervalShot1){
       gameManager.oldCountShot1 = count;
@@ -32,7 +40,13 @@ export function shotPlayer(){
       //console.log('SHOT!');
     }
     if(gameManager.playerLevel >= 1){
-      const intervalShot2 = 10;
+      let intervalShot2;
+      switch(gameManager.playerLevel){
+        case 0:break;
+        case 1:
+          intervalShot2 = 20;
+          break;
+      }
       if((count -gameManager.oldCountShot2) > intervalShot2){
         gameManager.oldCountShot2 = count;
         createPlayerShot2(gameManager.player.x +30, gameManager.player.y - 5, 20, 20);

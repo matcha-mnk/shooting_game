@@ -22,7 +22,7 @@ export function createEnemy1(posX, posY, mX, mY, num, hitPoint){
   });
 }
 
-export function createEnemy2(posX, posY, targetX, targetY, num, hitPoint, speed){
+export function createEnemy2(posX, posY, targetX, targetY, num, hitPoint, speed, tag){
   const rad = (Math.atan2(targetY - posY, targetX - posX)+90) * (Math.PI / 180);
   gameManager.enemies.push({
     createCount: gameManager.count,
@@ -31,7 +31,9 @@ export function createEnemy2(posX, posY, targetX, targetY, num, hitPoint, speed)
     tx: targetX,
     ty: targetY,
     id: num,
+    tag: tag,
     hp: hitPoint,
+    maxHp: hitPoint,
     width: gameManager.spriteImage.enemy_2.width,
     height: gameManager.spriteImage.enemy_2.height,
     moveX: Math.cos(rad) * speed,

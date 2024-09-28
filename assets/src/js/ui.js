@@ -49,9 +49,9 @@ export function drawUI(){
 
 
   //Count
-  ctx.font = '24px misaki_gothic_2nd';
-  ctx.fillStyle = '#dbdbdb';
-  ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
+  // ctx.font = '24px misaki_gothic_2nd';
+  // ctx.fillStyle = '#dbdbdb';
+  // ctx.fillText(`COUNT ${gameManager.count}`, 730, 320);
 
   //Character 描画
   let charImgPath;
@@ -63,6 +63,20 @@ export function drawUI(){
     charImgPath = gameManager.spriteImage.char_1_normal_1;
   }
   ctx.drawImage(charImgPath, 730, canvas.height - charImgPath.height);
+
+  //Boss 体力バー 描画
+  for(const enemy of gameManager.enemies){
+    if(enemy.tag ? enemy.tag === 'boss' : false){
+      const hpRatio = enemy.hp / enemy.maxHp;
+      //背景
+      ctx.fillStyle = '#1e1e1e';
+      ctx.fillRect(250+10, 10, canvas.width-500-20, 2);
+      //本体
+      ctx.fillStyle = '#b05151';
+      ctx.fillRect(250+10, 10, (canvas.width-500-20) * hpRatio, 2);
+      console.log(hpRatio);
+    }
+  }
 
   //Story 描画
   if(gameManager.isTalking){
